@@ -167,6 +167,7 @@ section{border-radius:12px;padding:6px;margin-top:4px}
 .zcell.on0{background:#3b1d2b;border-color:#f472b6;color:#f9a8d4}
 .zcell.on1{background:#0b2e22;border-color:#34d399;color:#6ee7b7}
 .zcell.on2{background:#3b2f0d;border-color:#eab308;color:#fcd34d}
+.zcell.zdef{color:#64748b}
 .zcell.zn0{background:#2b1a1a;border-color:#94a3b8;color:#cbd5e1}
 .zcell.zn1{background:#2a1348;border-color:#a78bfa;color:#c4b5fd}
 /* 対決相手の色 */
@@ -204,6 +205,7 @@ td.pick{cursor:pointer;border:1px solid #24344a;border-radius:5px;font-size:13px
 td.pick.on{background:#5c3a0d;border-color:#fb923c;color:#ffedd5;font-weight:700}
 .zcell.zpick{box-shadow:0 0 0 2px #fbbf24 inset;color:#fbbf24}
 /* 今入力してほしい欄を光らせる */
+#kegLampG.nextIn{outline:2px solid #fbbf24;border-radius:10px;animation:glowPulse 1.2s infinite}
 @keyframes glowPulse{
   0%{box-shadow:0 0 0 0 rgba(251,191,36,.7)}
   70%{box-shadow:0 0 0 7px rgba(251,191,36,0)}
@@ -251,7 +253,10 @@ td.pick.on{background:#5c3a0d;border-color:#fb923c;color:#ffedd5;font-weight:700
 #flash.on{animation:fl .18s ease-out}
 @keyframes fl{0%{opacity:0}35%{opacity:1}100%{opacity:0}}
 /* 打ち切り判定の自動アラート */
-#alertBar{position:sticky;top:0;z-index:40;margin:0 0 5px}
+#topBars{position:sticky;top:0;z-index:40}
+#alertBar{margin:0 0 5px}
+#modeBar{margin:0 0 5px}
+#modeBar .abar{background:#0b2e22;border:1px solid #34d399;color:#a7f3d0;font-size:11.5px;padding:5px 9px}
 .abar{border-radius:10px;padding:7px 9px;font-size:12px;font-weight:700;display:flex;
   justify-content:space-between;align-items:center;gap:6px;line-height:1.35}
 .abar.cut{background:#4a1010;border:1px solid #ef4444;color:#fecaca;animation:abarPulse 1.3s infinite}
@@ -270,9 +275,51 @@ td.pick.on{background:#5c3a0d;border-color:#fb923c;color:#ffedd5;font-weight:700
 /* かんたん入力のときは通常時シートの他の欄を全部隠す */
 #t-normal.simpleOn > section:not(#sSimple):not(#sHist),
 #t-normal.simpleOn > .kleg,
-#t-normal.simpleOn > #simpRow{display:none!important}
+#t-normal.simpleOn > #simpRow,
+#t-normal.simpleOn > .recWrap,#t-at.simpleOn > .recWrap{display:none!important}
 #t-at.simpleOn > section:not(#sSimpAt),
 #t-at.simpleOn > .kleg{display:none!important}
+.simpH{color:#f9a8d4;font-weight:700;font-size:11px;margin:6px 0 3px;line-height:1.2}
+/* かんたん入力は1画面に収める。ボタンは「名前＋回数」の1行、押しやすい高さ（36px以上）と文字（11px以上）にする。
+   ④濃厚示唆はめったに出ないので、出たときだけ開く */
+#sSimple{padding:6px 7px}
+#sSimple .sHead{display:flex;align-items:center;gap:5px}
+#sSimple .sTg{flex:1;margin:0;padding:2px 6px}
+#sSimple .sTg input{font-size:17px;padding:3px 4px;height:34px}
+#sSimple .sTg label{font-size:11px}
+#simpOff{min-height:38px;padding:6px 8px;border-radius:8px;border:1px solid #8fa3bd;color:#cbd5e1;background:transparent;font-size:11.5px;font-weight:700;white-space:nowrap}
+#sSimple .tile{flex-direction:row;gap:4px;padding:3px 4px;min-height:38px;border-radius:8px}
+#sSimple .tile .lab{font-size:11px;line-height:1.15}
+#sSimple .tile .val{font-size:14px}
+#sSimple .tile .cap{display:none}
+#sSimple .sGsel{margin:5px 0 0}
+#sSimple .sGsel button{min-height:40px;padding:4px 0;font-size:15px}
+#sSimple .sGsel .gnum{padding:2px 0}
+#sSimple .sGsel .gnum span:not(.gl):not(.gu){font-size:22px}
+#sSimple .gl{font-size:11px;color:#8fa3bd;margin-right:4px}
+#sSimple .gu{font-size:11px}
+#simpZenG .tile{justify-content:center}
+#simpZenG .tile.on{border-color:#67e8f9;background:#0c2a33}
+#simpHitG .big{margin:0;padding:10px 2px;min-height:44px;font-size:15px;border-radius:9px}
+.simpNkTog{width:100%;min-height:38px;margin-top:6px;border-radius:9px;border:1px solid #eab308;color:#fde68a;background:#1f1a08;font-size:12px;font-weight:700}
+#simpNkG .nkrow{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:4px 0}
+#simpNkG .nkh{font-size:11px;color:#8fa3bd;margin:0 2px 0 0;min-width:70px}
+#simpNkG .tile{flex:0 0 auto;padding:3px 7px}
+#sSimple #simpBox{font-size:11px;margin-top:4px;line-height:1.35}
+/* 判定に使わない「記録用」の入力。既定では隠し、帯のボタンで出し入れする */
+body.recOff .rec,body.recOff .recH{display:none!important}
+/* 記録用を隠したときは空いたマスを詰める（小役は弱チェ・スイカの2列にする） */
+body.recOff #koyakuG{grid-template-columns:repeat(2,1fr)}
+.rec{position:relative}
+.rec.tile::after,section.rec>.acc-btn .ttl::after,.sub2.rec::after{content:"記録用";font-size:8.5px;color:#94a3b8;border:1px solid #475569;border-radius:5px;padding:0 3px;margin-left:4px}
+.rec.tile::after{position:absolute;top:1px;right:2px;margin:0}
+.recWrap{margin:0 0 5px}
+.recTog{width:100%;padding:6px;border-radius:9px;border:1px dashed #64748b;color:#94a3b8;background:transparent;font-size:11px;font-weight:700}
+.nkh{font-size:10px;color:#8fa3bd;margin:5px 0 2px}
+/* 押し忘れの候補 */
+.forgot{outline:2px dashed #fb923c!important;outline-offset:1px;animation:glowPulse 1.4s infinite}
+.fgbar{background:#3b1d0a;border:1px solid #fb923c;color:#fdba74;border-radius:10px;padding:5px 8px;font-size:11px;margin:4px 0}
+.fgbar button{margin-left:6px;padding:2px 8px;border-radius:7px;border:1px solid #fb923c;color:#fdba74;font-size:10.5px}
 /* AT中のかんたん入力の小役ボタン */
 .big2{padding:11px 6px;font-size:14px}
 #histT td{padding:2px 3px}
@@ -392,7 +439,8 @@ textarea:focus{outline:2px solid #22d3ee}
 
 <main>
 <div id="flash"></div>
-<div id="alertBar" style="display:none"></div>
+<div id="topBars"><div id="alertBar" style="display:none"></div>
+<div id="modeBar"></div></div>
 <div id="chipBar"><div class="chips" id="jump"></div></div>
 
 <div id="t-normal">
@@ -402,26 +450,32 @@ textarea:focus{outline:2px solid #22d3ee}
 </div>
 
 <section class="card" id="sSimple" style="border-color:#f472b6;display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center">
-    <span class="ttl p" style="padding:0">かんたん入力</span>
-    <button id="simpOff" style="padding:4px 10px;border-radius:8px;border:1px solid #8fa3bd;color:#cbd5e1;background:transparent;font-size:11px;font-weight:700">詳しい入力に戻す</button>
+  <div class="sHead">
+    <span class="ttl p" style="padding:0">かんたん</span>
+    <div class="inp sTg"><label for="tg3">総G</label><input id="tg3" type="text" inputmode="numeric" placeholder="0"></div>
+    <button id="simpOff">詳しい入力</button>
   </div>
-  <div class="sub2">総G（データカウンターの数字）</div>
-  <div class="row">
-    <div class="inp" style="flex:1"><label for="tg3">総G</label><input id="tg3" type="text" inputmode="numeric" placeholder="0"><span class="u">G</span></div>
+  <div id="simpForgot"></div>
+  <div class="simpH">① アイキャッチ</div>
+  <div class="grid g3" id="simpEyeG"></div>
+  <div class="gsel sGsel">
+    <button id="simpPrev">◀</button>
+    <div class="gnum"><span class="gl">節目</span><span id="simpG">50</span><span class="gu">G</span></div>
+    <button id="simpNext">▶</button>
   </div>
-  <div class="sub2">今の周期でCZに入った節目</div>
-  <div class="gsel">
-    <button id="simpPrev">◀ 前</button>
-    <div class="gnum"><span id="simpG">50</span><span class="gu">G</span></div>
-    <button id="simpNext">次 ▶</button>
+  <div class="simpH">② 招待状 … <b id="simpInvAt" class="hot">50G</b> で記録</div>
+  <div class="grid g3" id="simpInvG"></div>
+  <div class="simpH">③ 前兆と当たったG … <b id="simpHitAt" class="hot">50G</b> で記録</div>
+  <div class="grid g3" id="simpZenG" style="margin-bottom:4px"></div>
+  <div class="grid g3" id="simpHitG">
+    <button class="big b1" data-simp="remi"><span>レミニ</span></button>
+    <button class="big b2" data-simp="rize"><span>リゼ</span></button>
+    <button class="big b3" data-simp="cz"><span>CZ→外し</span></button>
+    <button class="big b4" data-simp="at"><span>CZ→AT</span></button>
+    <div id="simpDiffG" style="display:contents"></div>
   </div>
-  <button class="big b1" data-simp="remi"><span>レミニに入った</span><span class="cap">この節目をCZ（レミニ）として記録</span></button>
-  <button class="big b2" data-simp="rize"><span>リゼに入った</span><span class="cap">この節目を上位CZ（リゼ）として記録</span></button>
-  <button class="big b3" data-simp="cz"><span>CZ → 外し</span><span class="cap">1周期として確定して次へ</span></button>
-  <button class="big b4" data-simp="at"><span>CZ → AT</span><span class="cap">AT当選として確定</span></button>
-  <div class="sub2">設定差のある項目だけ（これ以外は判定に効かない）</div>
-  <div class="grid g3 uni2" id="simpDiffG"></div>
+  <button id="simpNkTog" class="simpNkTog">④ 濃厚示唆（出たときだけ開く） ▼</button>
+  <div id="simpNkG" style="display:none"></div>
   <div class="note" id="simpBox" style="display:block"></div>
 </section>
 
@@ -436,6 +490,7 @@ textarea:focus{outline:2px solid #22d3ee}
   </div>
 </section>
 
+<div class="recWrap"><button class="recTog" data-rectog="1"></button></div>
 <div class="kleg" id="kleg1"><span class="kd kSt"></span>状態<span class="kd kKo"></span>小役<span class="kd kSu"></span>スイカ加算<span class="kd kSel"></span>選ぶ<span class="kd kUn"></span>取消<span class="kd kMv"></span>移動<span class="kd kRec"></span>記録</div>
 
 <!-- 小役・状態＋ゾーン表＋周期確定 -->
@@ -443,8 +498,9 @@ textarea:focus{outline:2px solid #22d3ee}
   <div style="display:flex;justify-content:space-between;align-items:center">
     <span class="ttl t" style="padding:0" id="koyTop">小役・状態</span>
   </div>
-  <div class="sub2">ステージ（今出ている背景）</div>
-  <div class="grid g4 uni" id="stgG"></div>
+  <div id="fgTop"></div>
+  <div class="sub2 recH">ステージ（今出ている背景）</div>
+  <div class="grid g4 uni recH" id="stgG"></div>
   <div class="sub2" id="seiLab" style="display:none">精神世界の保証ゲーム数（告知された数字を押す）</div>
   <div class="grid g3 uni" id="seiG" style="display:none"></div>
   <div class="note" id="stgNote"></div>
@@ -468,11 +524,11 @@ textarea:focus{outline:2px solid #22d3ee}
   <div class="zwrap"><div class="ztab" id="zoneTab"></div></div>
 
   <div id="editBar"></div>
-  <div class="sub2" id="commitLab">CZの結末と、ほかの欄へ飛ぶ</div>
+  <div class="sub2" id="commitLab">CZの結末</div>
   <div class="grid g2 uni" id="commitG"></div>
   <div class="sub2">弱チェからのCZ当選（どの状態から当たったか）</div>
   <div class="grid g4 uni2" id="kzG"></div>
-  <div class="grid g4 uni2" id="goG" style="margin-top:3px"></div>
+  <div class="grid g4 uni2 rec" id="goG" style="margin-top:3px"></div>
   <div class="note fold" id="atInfo">CZが外れたら「CZ→外し」、ATに入ったら「CZ→AT」。どちらも2回押しで確定し、押した時点までの入力を1周期として履歴に残す。次は <span class="hot" id="atNext">1</span> 周期目。</div>
   <div class="note" id="commitMsg"></div>
 
@@ -634,6 +690,7 @@ textarea:focus{outline:2px solid #22d3ee}
   <div class="note" id="simpAtBox" style="display:block"></div>
 </section>
 
+<div class="recWrap"><button class="recTog" data-rectog="1"></button></div>
 <section class="card" id="sAtKoy" style="border-color:#a21caf">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <span class="ttl p" style="padding:0">AT中の小役・状態</span>
@@ -697,7 +754,7 @@ textarea:focus{outline:2px solid #22d3ee}
   </div>
 </section>
 
-<section class="card" id="sZb" style="border-color:#a78bfa">
+<section class="card rec" id="sZb" style="border-color:#a78bfa">
   <button class="acc-btn" id="pZb" aria-expanded="false">
     <span class="ttl g" style="padding:0">AT中の特化ゾーン（設定差を自分で探す用）</span><span class="r">ひらく ▼</span>
   </button>
@@ -727,8 +784,8 @@ textarea:focus{outline:2px solid #22d3ee}
   <div class="grid g3" id="maiG"></div>
   <div class="sub2">トロフィー（AT終了画面で出現）</div>
   <div class="grid g3" id="troG"></div>
-  <div class="sub2">そのトロフィーが出たときの総G（押すと記録）</div>
-  <div class="grid g4 uni2" id="troGG"></div>
+  <div class="sub2 rec">そのトロフィーが出たときの総G（トロフィーを押すと今の総Gで自動記録。直すときだけ押す）</div>
+  <div class="grid g4 uni2 rec" id="troGG"></div>
   <div class="note" id="troGBox"></div>
   <div class="note fold" id="troNote">銅＝設定2以上／銀＝3以上／金＝4以上／喰種柄＝5以上／虹＝設定6、いずれも濃厚。黒は設定示唆ではなく「次回ATでトロフィー濃厚」の予告なので、次のAT終了画面を必ず確認する。</div>
   </div>
@@ -749,7 +806,7 @@ textarea:focus{outline:2px solid #22d3ee}
 
 
 
-<section class="card" id="sRt">
+<section class="card rec" id="sRt">
   <button class="acc-btn" id="pRt" aria-expanded="false">
     <span class="ttl g" style="padding:0">報酬テーブル（BITES）</span>
     <span class="r" id="rtsum">ひらく ▼</span>
@@ -783,8 +840,8 @@ textarea:focus{outline:2px solid #22d3ee}
   <div id="bUra" style="display:none">
   <div class="sub2">何G当たりで裏ATに入ったか（押すと記録して小役欄へ戻る）</div>
   <div class="grid g3 uni2" id="uraPickG"></div>
-  <div class="sub2">分母と分子（細かく直すとき）</div>
-  <div class="grid g4" id="uraG"></div>
+  <div class="sub2 rec">分母と分子（細かく直すとき）</div>
+  <div class="grid g4 rec" id="uraG"></div>
   </div>
   <div class="note fold" id="uraNote">前兆が始まったゲーム数で分けて数える。100G以内に前兆が始まったAT当選は設定1で3.18％、設定6で5.14％。200G以内は2.99％〜4.77％。AT当選のたびに該当する分母を押し、裏ATスタートだったら分子も押す。有馬貴将ジャッジメント成功を経由した当選は対象外。</div>
 </section>
@@ -942,6 +999,8 @@ textarea:focus{outline:2px solid #22d3ee}
   </div>
   <input type="file" id="bkFile" accept=".txt,.json,text/plain" style="display:none">
   <div class="note" id="bkMsg" style="margin-top:3px"></div>
+  <div class="note" style="margin-top:5px">自動の控え（周期が1つ進むごと・10分ごとに端末へ自動で残す。最新5件）</div>
+  <div id="snapList" style="display:flex;flex-direction:column;gap:3px;margin-top:3px"></div>
   <div id="pasteBox" style="display:none;margin-top:5px">
     <textarea id="pasteIn" rows="3" placeholder="復元コードを貼り付け"></textarea>
     <button id="pasteGo" style="width:100%;margin-top:4px;padding:8px;border-radius:9px;background:#b45309;font-size:11px;font-weight:700">この内容で復元する</button>
@@ -1046,6 +1105,15 @@ textarea:focus{outline:2px solid #22d3ee}
 <script>
 (function(){
 "use strict";
+/* ===== 目次（各見出しの文字列で検索すると飛べる） =====
+   設定別データ … 解析値の表 P（p-world の機械割・AT初当りと、解析サイト3件で一致を確認済み）
+   モード       … MODES／PRIOR／ZONEW／MTEN（モードの出発点・節目の期待度・天井）
+   状態管理     … S（全データ）・save／load・自動の控え（snapTake）
+   復元コード   … encode／decode（「TG5:」。区画は末尾に足すだけ＝古いコードも読める）
+   推定エンジン … bayes／judge（設定）／modeJudge（モード）／hardPost（答え合わせ用）
+   描画         … render → render1（1回の更新の間は MEMO で判定を使い回す）
+   イベント     … クリックはすべて document の1か所で受ける
+   保存キーは ghoul-counter-v5 から変えない。 */
 
 /* ==================== 設定別データ ==================== */
 var P={
@@ -1228,10 +1296,14 @@ var ZONEW=[
   [4  ,4  ,0.2,4  ,0.2,0.2]   /* 600G */
 ];
 /* 各モードの列を合計1に正規化して「どの節目で当たったか」の尤度にする */
+/* モードごとの天井（このGまでに必ず当たる） */
+var MTEN=[600,600,500,600,300,100];
+/* 節目ごとの当選の割合。天井より先の節目には来ないので、天井までの節目だけで割合にする */
+var ZG0=[50,100,150,200,250,300,400,500,600];
 var ZONECOL=(function(){
   var sum=[0,0,0,0,0,0];
-  ZONEW.forEach(function(r){ r.forEach(function(v,i){ sum[i]+=v }) });
-  return ZONEW.map(function(r){ return r.map(function(v,i){ return sum[i]>0?v/sum[i]:0 }) });
+  ZONEW.forEach(function(r,gi){ r.forEach(function(v,i){ if(ZG0[gi]<=MTEN[i]) sum[i]+=v }) });
+  return ZONEW.map(function(r,gi){ return r.map(function(v,i){ return (sum[i]>0&&ZG0[gi]<=MTEN[i])?v/sum[i]:0 }) });
 })();
 function zc(mi,i){
   var v=ZONEW[i][mi];
@@ -1278,7 +1350,7 @@ var EYE=[
   {k:"y3",lab:"笛口雛実（白）",m:MW.Cup,note:"モードC以上UP"},
   {k:"y4",lab:"月山習（白）",m:null,note:"本前兆期待度UP",cls:"gd"},
   {k:"y5",lab:"神代利世（白）",m:null,note:"本前兆 大幅UP",cls:"gd"},
-  {k:"y6",lab:"喰種化（黒）",m:null,rem:100,note:"残り100G以内に当選濃厚",cls:"hv"},
+  {k:"y6",lab:"喰種化（黒）",m:[1,1,1,1,1,3],rem:100,lim:100,note:"100G以内に当選濃厚・天国期待（AT終了後に出た前提）",cls:"hv"},
   {k:"y7",lab:"喰種化 神代利世",m:null,note:"連続演出 復活濃厚",cls:"gd"}
 ];
 var MODEITEMS=[].concat(CARDM,INVM,EYE,CYCTAGS);
@@ -1287,10 +1359,12 @@ var MODEITEMS=[].concat(CARDM,INVM,EYE,CYCTAGS);
 var ZG=[50,100,150,200,250,300,400,500,600];
 var ZEN=["−","無","プレ","上空"], ZENC=["","zn0","zn1","zn2"];
 /* 押したときに回る順番。0=未 → 3=上空 → 2=プレ → 1=無 → 0。
-   200Gと400Gは「前兆なし」自体がモード示唆になるので「無」も押せるようにしている */
-var ZENORD=[0,3,2,1];
+   「無」は全部の節目で押せる。200Gと400Gの「無」はモード示唆（天国準備・通常C濃厚）として効く。
+   ほかの節目の「無」は「その節目は何も無かった」という記録で、押し忘れの検出と到達Gに使う */
+/* 前兆は最初から「無」。押すたびに 無 → プレ → 東京上空 → 無 と切り替わる（1は旧版の明示の「無」） */
+var ZENORD=[0,2,3];
 function zenNext(v,up){
-  var i=ZENORD.indexOf(v|0);
+  var i=ZENORD.indexOf((v|0)===1?0:(v|0));
   if(i<0) i=0;
   return ZENORD[(i+(up?1:ZENORD.length-1))%ZENORD.length];
 }
@@ -1605,6 +1679,8 @@ function load(){
   try{
     var o=JSON.parse(raw), b=blank();
     for(var k in b){ if(o[k]!==undefined) b[k]=o[k] }
+    /* 自動入力ができる前の保存は、総Gを手で打っていた。実測として残す */
+    if(o.tgMan===undefined&&o.tg) b.tgMan=true;
     if(!b.cur) b.cur=blankCyc();
     var t=blankCyc(); for(var kk in t){ if(b.cur[kk]===undefined) b.cur[kk]=t[kk] }
     if(!b.atAcc) b.atAcc=blankBucket();
@@ -1647,8 +1723,40 @@ function doUndo(){
   if(b) b.textContent="↺ 1つ戻す"+(undoStack.length?"("+undoStack.length+")":"");
   say("直前の操作を1つ戻した。あと"+undoStack.length+"手戻せる。","#fbbf24"); sayClear(3500);
 }
+/* 自動の控え。上書きで壊れても、少し前の状態から戻せる */
+var SNAPKEY=KEY+"-snaps", snapT=0, snapN=-1;
+function snapGet(){ try{ return JSON.parse(store.get(SNAPKEY)||"[]") }catch(e){ return [] } }
+function snapTake(force){
+  var n=(S.cycles||[]).length, now=Date.now();
+  if(!force&&n===snapN&&now-snapT<600000) return;
+  if(snapN<0&&!force){ snapN=n; snapT=now; return }
+  var a=snapGet(), j=JSON.stringify(S);
+  if(a.length&&a[0].j===j){ snapN=n; snapT=now; return }
+  a.unshift({t:now,n:n,j:j}); a=a.slice(0,5);
+  if(!store.set(SNAPKEY,JSON.stringify(a))){ a=a.slice(0,2); store.set(SNAPKEY,JSON.stringify(a)) }
+  snapN=n; snapT=now; renderSnaps();
+}
+function renderSnaps(){
+  var el=document.getElementById("snapList"); if(!el) return;
+  var a=snapGet();
+  if(!a.length){ el.innerHTML='<span class="note">まだ控えは無い。</span>'; return }
+  el.innerHTML=a.map(function(x,i){
+    var d=new Date(x.t), pad=function(v){ return String(v).padStart(2,"0") };
+    return '<button data-snap="'+i+'" style="padding:6px;border-radius:8px;border:1px solid #475569;color:#cbd5e1;font-size:11px;text-align:left">'+
+      (d.getMonth()+1)+'/'+d.getDate()+' '+pad(d.getHours())+':'+pad(d.getMinutes())+' の状態（記録済み '+x.n+'周期）に戻す</button>';
+  }).join("");
+}
+function snapRestore(i){
+  var a=snapGet(), x=a[i]; if(!x) return;
+  if(!confirm("この控えの状態に戻す。今の状態は控えに残してから戻す。よいか？")) return;
+  snapTake(true);
+  try{ var o=JSON.parse(x.j); store.set(KEY,x.j); load(); }catch(e){ return }
+  save(); render(); renderSnaps();
+  say("控えから戻した。","#34d399"); sayClear(3500);
+}
 function save(){
   var ok=store.set(KEY,JSON.stringify(S)), el=document.getElementById("save");
+  try{ snapTake(false) }catch(e){}
   el.textContent=ok?"保存OK":"一時保持のみ"; el.className=ok?"ok":"ng";
   syncHash();
   /* 保険としてもう1か所に置く。片方が消えてももう片方から戻せる */
@@ -1670,6 +1778,14 @@ function flushSave(){
 /* ブラウザに「この保存領域を勝手に消さないでほしい」と申請する。
    端末の容量が逼迫したときの自動削除を防ぐ */
 var persistOK=null;
+/* 電波が無くても開けるようにする（同じ場所に sw.js を置いたときだけ有効） */
+var swOK=null;
+function regSW(){
+  try{
+    if(!("serviceWorker" in navigator)||!/^https:|^http:\/\/localhost/.test(location.href)){ swOK=false; return }
+    navigator.serviceWorker.register("sw.js").then(function(){ swOK=true; render() },function(){ swOK=false; render() });
+  }catch(e){ swOK=false }
+}
 function askPersist(){
   try{
     if(navigator.storage&&navigator.storage.persist){
@@ -1879,7 +1995,8 @@ function encode(){
   var E=S.est||{};
   var esv=[E.pl||40,E.set||150,E.run||5,E.coin||28,E.lend||50,
     Math.floor(Number(S.run0||0)/1000),S.tgMan?1:0,S.atMode?1:0];
-  var es=esv.some(function(x,i){ return i<5?false:!!x }) || esv.slice(0,5).join(".")!=="40.150.5.28.50"
+  /* 総Gが入っているときは必ず書く。空の区画は「推定ができる前の古いコード」の目印にする */
+  var es=(S.tg||esv.some(function(x,i){ return i<5?false:!!x }) || esv.slice(0,5).join(".")!=="40.150.5.28.50")
     ? esv.join(".") : "";
   /* AT間Gの実測ログ。末尾に追加した区画 */
   var pls=(S.plLog||[]).map(function(e){ return (e.m|0)+"."+(e.g|0) }).join("+")+
@@ -1984,6 +2101,8 @@ function decode(txt){
     coin:parseInt(ev[3],10)||28,lend:parseInt(ev[4],10)||50};
   b.run0=(parseInt(ev[5],10)||0)*1000;
   b.tgMan=(parseInt(ev[6],10)||0)===1;
+  /* 推定の区画が無い古いコードは、総Gを手で打っていた。実測として残す */
+  if(!m[20]&&b.tg) b.tgMan=true;
   if(ev.length>7) b.atMode=(parseInt(ev[7],10)||0)===1;
   /* 遊技履歴。古いコードには無いので空のまま */
   var hv=(m[19]||"").split(".");
@@ -2032,7 +2151,7 @@ function bayes(prior){
       var kl=0; p.forEach(function(x){ if(x>0) kl+=x*Math.log(x*n) });
       var z=[]; p.forEach(function(x,i){ if(x<1e-9) z.push(i) });
       var b=0; p.forEach(function(x,i){ if(x>p[b]) b=i });
-      facs.push({name:name,note:note,kl:kl,zeros:z,best:b});
+      facs.push({name:name,note:note,kl:kl,zeros:z,best:b,w:p});
     },
     done:function(){
       var s=post.reduce(function(a,b){return a+b},0);
@@ -2046,29 +2165,68 @@ function bayes(prior){
 }
 /* 総G。データカウンターの実測が入っていればそれ、無ければ推定 */
 function tgUse(){ return Number(S.tg||0)||tgEst() }
+/* 尤度を弱める。互いに関係の深い項目を「別々の証拠」として掛けると、
+   同じ情報を何度も数えて確信度が膨らむ。規則：同じ情報を含む項目がk個あれば、それぞれ1/kの強さで掛ける
+   （k個合わせて1回ぶんになる）。推定値を分母に使う項目も同じ考えで1/2にする */
+function tmp(w,t){ return w ? w.map(function(x){ return Math.pow(x,t) }) : w }
+/* 100G以内の当選率のうちCZ回数と重ならない情報の割合（模擬で測定した値） */
+var G100W=0.58;
+/* 総Gが実測かどうか。推定の総Gは純増などの仮定から出した数字なので、判定の分母には使わない */
+function tgReal(){ return S.tgMan ? Number(S.tg||0) : 0 }
+/* 自動テスト専用の入口。URLに ?selftest=1 を付けたときだけ作る（普段の利用では存在しない） */
+if(/[?&]selftest=1/.test(location.search)) window.__T={
+  blank:function(){ return blank() }, blankCyc:function(){ return blankCyc() }, zSet:function(c,i,sh,v){ zSet(c,i,sh,v) },
+  setS:function(x){ S=x }, judge:function(){ return judge0() }, mode:function(){ MEMO=null; calibEps(); SOFTL={}; SOFTCAL={}; calibSoft(); return modeJudge0(S.cur) },
+  P:P, ZONEW:ZONEW, ZG:ZG, MTEN:MTEN, PRIOR:PRIOR };
+/* 1回の画面更新の間は判定結果を使い回す（同じ計算を何十回もしないため） */
+var MEMO=null;
 function judge(){
+  if(MEMO&&MEMO.j) return MEMO.j;
+  var r=judge0(); if(MEMO) MEMO.j=r; return r;
+}
+function judge0(){
   var B=bayes([1,1,1,1,1,1].map(function(){return 1/6}));
-  var tg=tgUse(), ng=Number(S.ng||0)||tg, cz=czTot(), cr=czResCnt();
-  B.add("レミニセンス",cz.remi+"回 / "+tg+"G",binom(inv(P.remi),tg,cz.remi));
-  B.add("大喰いのリゼ",cz.rize+"回 / "+tg+"G",binom(inv(P.rize),tg,cz.rize));
-  B.add("エピソードボーナス",S.epi+"回 / "+ng+"G",binom(inv(P.epi),ng,S.epi));
-  B.add("AT直撃（リプレイ）",S.direct+"回 / "+ng+"G",binom(inv(P.direct),ng,S.direct));
+  var tg=tgReal(), ng=Number(S.ng||0), cz=czTot(), cr=czResCnt();
+  /* CZ確率と下段リプレイは「総G」あたりの数値。実測があればそのまま、
+     推定の総Gしかないときは仮定を含むので1/2の強さで入れる */
+  var tgE2=tg||tgEst(), tw2=tg?1:0.5, tnote=tg?"":"（総Gが推定なので1/2の強さ）";
+  if(tgE2>0){
+    B.add("レミニセンス",cz.remi+"回 / "+tgE2+"G"+tnote,tmp(binom(inv(P.remi),tgE2,cz.remi),tw2));
+    B.add("大喰いのリゼ",cz.rize+"回 / "+tgE2+"G"+tnote,tmp(binom(inv(P.rize),tgE2,cz.rize),tw2));
+  }
+  /* エピボと直撃は「通常G」あたり。通常Gはゾーン表から出る実ゲーム数なのでそのまま使う */
+  var ngE=ng||tg;
+  B.add("エピソードボーナス",S.epi+"回 / "+ngE+"G",binom(inv(P.epi),ngE,S.epi));
+  B.add("AT直撃（リプレイ）",S.direct+"回 / "+ngE+"G",binom(inv(P.direct),ngE,S.direct));
   var kd=kadenN();
-  B.add("下段リプレイ",kd+"回 / "+tg+"G",binom(inv(P.kaden),tg,kd));
+  if(tgE2>0) B.add("下段リプレイ",kd+"回 / "+tgE2+"G"+tnote,tmp(binom(inv(P.kaden),tgE2,kd),tw2));
+  /* 100G以内の当選率は、CZ回数と同じ「周期の長さ」から出ている。
+     周期の長さを設定1と6で2万回ずつ模擬して測ると、2つの証拠の相関は約0.53、
+     CZ回数と重ならない残りの情報は約0.58（総G 1500〜6000Gでほぼ一定）。その分だけ掛ける */
   var gd=g100Den(), gh=Math.min(g100Hit(),gd);
-  B.add("100G以内の当選率",gh+" / "+gd+"回",binom(P.g100,gd,gh));
+  B.add("100G以内の当選率",gh+" / "+gd+"回（CZ回数と重なる分を除いた0.58の強さ・模擬で測定）",tmp(binom(P.g100,gd,gh),G100W));
+  /* 裏ATの100G以内と200G以内は同じ現象を2段階で見ているので、どちらも弱めて掛ける */
+  /* 裏AT。解析値の「200G以内」は100G以内を含む累計の率。ボタンは 100G以内／101〜200G を別々に数えている。
+     そこで 101〜200G だけの率を「累計の率＝2区間の加重平均」から出し、重ならない2区間として掛ける */
   var un1=S.u100n, uh1=Math.min(S.u100h,un1);
-  B.add("裏AT（100G以内に前兆開始）",uh1+" / "+un1+"回",binom(P.ura100,un1,uh1));
   var un2=S.u200n, uh2=Math.min(S.u200h,un2);
-  B.add("裏AT（200G以内に前兆開始）",uh2+" / "+un2+"回",binom(P.ura200,un2,uh2));
+  B.add("裏AT（100G以内に前兆開始）",uh1+" / "+un1+"回",binom(P.ura100,un1,uh1));
+  if(un2>0){
+    var p2=[0,1,2,3,4,5].map(function(i){
+      var v=(P.ura200[i]*(un1+un2)-P.ura100[i]*un1)/un2;
+      return Math.min(0.999,Math.max(0.001,v));
+    });
+    B.add("裏AT（101〜200Gで前兆開始）",uh2+" / "+un2+"回（累計の率から100G以内の分を引いて計算）",binom(p2,un2,uh2));
+  }
   var mn=S.modoOK+S.modoNG;
   B.add("AT引き戻し",S.modoOK+" / "+mn+"回",binom(P.modoshi,mn,Math.min(S.modoOK,mn)));
-  /* ★精神世界の保証ゲーム数。3択なので各段を二項として個別に効かせる */
+  /* ★精神世界の保証ゲーム数。10G／20G／30Gの3択なので、1回の観測を1回だけ数える（多項分布） */
   var s1=trSum("sei10"), s2=trSum("sei20"), s3=trSum("sei30"), sAll=s1+s2+s3;
   if(sAll>0){
-    B.add("精神世界 30G",s3+" / "+sAll+"回",binom(P.sei30,sAll,s3));
-    B.add("精神世界 20G",s2+" / "+sAll+"回",binom(P.sei20,sAll,s2));
-    B.add("精神世界 10G",s1+" / "+sAll+"回",binom(P.sei10,sAll,s1));
+    var wsei=[0,1,2,3,4,5].map(function(i){
+      return Math.pow(P.sei10[i],s1)*Math.pow(P.sei20[i],s2)*Math.pow(P.sei30[i],s3);
+    });
+    B.add("精神世界の保証G","10G "+s1+"回／20G "+s2+"回／30G "+s3+"回",wsei);
   }
   var wn=koySum("normal","wc"), wk=koySum("kouka","wc");
   B.add("弱チェ→CZ（通常）",S.wchN+" / "+wn+"回",binom(P.wchN,wn,Math.min(S.wchN,wn)));
@@ -2078,6 +2236,18 @@ function judge(){
   var r=B.done();
   r.high=r.post[3]+r.post[4]+r.post[5];
   r.payout=r.post.reduce(function(a,x,i){return a+x*P.payout[i]},0);
+  /* 確度。1日の実戦では偶然の揺れが大きいので、材料の量で「どこまで信じてよいか」を出す。
+     濃厚系（設定を否定する演出）があれば材料が少なくても確度は上がる */
+  var nz=r.facs.filter(function(f){ return f.zeros&&f.zeros.length }).length;
+  /* 確度。設定1と設定6のCZ回数の差が、偶然の揺れ（標準偏差）の何倍になるかで決める。
+     1倍未満＝低、1〜2倍＝中、2倍以上＝高。推定の総Gは1/2の強さなので、Gも半分として数える */
+  var gEv=tg?tg:(tgE2*0.5);
+  var d1=1/P.czAll[0], d6=1/P.czAll[5], dm=(d1+d6)/2;
+  r.zsep=gEv>0?Math.sqrt(gEv)*(d6-d1)/Math.sqrt(dm):0;
+  r.gNeed1=Math.ceil(dm/Math.pow(d6-d1,2));
+  r.gNeed2=r.gNeed1*4;
+  r.conf=(nz>0||r.zsep>=2)?"高":(r.zsep>=1?"中":"低");
+  r.tgReal=tg;
   r.best=r.best+1; r.cz=cz; r.cr=cr; r.kaden=kd; r.g100d=gd; r.g100h=gh;
   r.atFirst=cr.hit+(S.direct||0)+(S.epi||0); r.sei=[s1,s2,s3,sAll];
   return r;
@@ -2112,13 +2282,138 @@ function modePrior(c){
   });
   return {p:p,why:why};
 }
+/* モードの「濃厚!?」は解析媒体でも断定していない。0にせず1/20の余地を残して、モードを確定させない。
+   ゾーン期待度の「−」と同じ扱い。天井を過ぎたことによる除外は事実なので0のまま */
+/* 余地は「20回に1回は外れる」を出発点にして、自分の記録で外れた回数から学習する（ベータ分布の事後平均）。
+   外れの判定 … 濃厚で残ったモードの天井（＋0）を超えてCZに当たった周期 */
+var MZEPS=0.05, mzCol=null, MZCAL={n:0,c:0};
+function mzk(w){
+  if(!w) return w;
+  if(mzCol) mzCol.push(w);
+  return w.map(function(x){ return x>0?x:MZEPS });
+}
+/* ==== 「期待度UP」系の示唆を、ゾーン表の記録で答え合わせして強さを学習する ====
+   確定した周期ごとに、示唆を一切使わず「当たった節目（レア役当選はそのG）」と「天井」だけで推定し直す。
+   残りだけで示唆の言うモード群が8割以上なら当たり、2割以下なら外れ。どちらでもない周期は使わない。
+   解析の強さ（1.6倍など）を10回ぶんの出発点にして、当たり／外れで強さを更新する */
+var MZSKIP=null, SOFTL={}, SOFTCAL={};
+function isSoft(w){ return w&&!w.some(function(x){ return x===0 })&&w.some(function(x){ return x>1 }) }
+function softW(name,w){
+  if(!isSoft(w)||!SOFTL[name]) return w;
+  var L=SOFTL[name], L0=Math.max.apply(null,w);
+  /* 「今すぐに」のように チャンス1.4／天国準備2／天国3 と段階がある示唆は、
+     一番強い倍率を学習した値に置きかえ、ほかは解析の比率のまま伸び縮みさせる */
+  return w.map(function(x){ return x>1 ? 1+(x-1)*(L-1)/(L0-1) : 1 });
+}
+function softTag(name){
+  var c=SOFTCAL[name]; if(!c||!(c.h+c.m)) return "";
+  return "・答え合わせ"+(c.h+c.m)+"回中"+c.h+"回当たり";
+}
+/* 答え合わせ専用。示唆を一切使わず「当たった節目」と「天井」だけでモードを推す。
+   示唆どうしで採点し合う（自分で自分を採点する）のを避けるため */
+function hardPost(cy){
+  var g=czG(cy), gR=0;
+  (cy.kzl||[]).forEach(function(e){ if((e.r|0)>=2&&(e.g|0)>gR) gR=e.g|0 });
+  if(!g&&!gR) return null;
+  var w=[0,1,2,3,4,5].map(function(mi){
+    var t=0,x=0;
+    ZG.forEach(function(gg,i){
+      if(gg>MTEN[mi]) return;
+      var z=ZONEW[i][mi]; t+=z;
+      if(g){ if(gg===g) x+=z } else if(gg>gR) x+=z;
+    });
+    if(g) return t>0?x/t:0;
+    /* レア役当選：その手前で天井に届くモードは無い */
+    return MTEN[mi]<gR?0:(t>0?x/t:0);
+  });
+  var q=w.map(function(x,i){ return x*PRIOR[i] }), s=q.reduce(function(a,b){ return a+b },0);
+  return s>0?q.map(function(x){ return x/s }):null;
+}
+function calibSoft(){
+  SOFTL={}; var tally={};
+  var PI=PRIOR;
+  S.cycles.forEach(function(cy){
+    if(!hardPost(cy)) return;
+    var r0=modeJudge(cy);
+    (r0.facs||[]).forEach(function(f){
+      var w=null;
+      MODEITEMS.forEach(function(o){ if(o.lab===f.name) w=o.m });
+      if(!w) w=softRaw(f.name);
+      if(!isSoft(w)) return;
+      var q=hardPost(cy); if(!q) return;
+      var qH=0; w.forEach(function(x,i){ if(x>1) qH+=q[i] });
+      var t=tally[f.name]||(tally[f.name]={h:0,m:0,w:w});
+      if(qH>=0.8) t.h++; else if(qH<=0.2) t.m++;
+    });
+  });
+  Object.keys(tally).forEach(function(k){
+    var t=tally[k], w=t.w, L0=Math.max.apply(null,w), pH=0, pN=0;
+    /* 当たりも外れも数えられていなければ学習しない（解析の重みのまま） */
+    if(!(t.h+t.m)) return;
+    /* 一番強いモードを基準に、解析の重みで当たる見込みを出す */
+    w.forEach(function(x,i){ if(x>1) pH+=PI[i]*x/L0; else pN+=PI[i] });
+    var pHn=0; w.forEach(function(x,i){ if(x>1) pHn+=PI[i] });
+    /* 解析の強さで当たる見込み → 10回ぶんの出発点 */
+    var a0=pH*L0/(pH*L0+pN), K=10;
+    var acc=(t.h+K*a0)/(t.h+t.m+K);
+    acc=Math.min(0.97,Math.max(0.03,acc));
+    /* 当たる見込み acc になる倍率を逆算（段階の比率は保つ） */
+    var L=acc/(1-acc)*pN/pH;
+    SOFTL[k]=Math.max(0.5,L);
+    SOFTCAL[k]={h:t.h,m:t.m,L0:L0,L:SOFTL[k]};
+  });
+}
+/* ゲーム数前兆の表（前兆発生ゲーム数によるモード示唆）の期待度UP系 */
+var SOFTRAW={"200G プレ":null};
+function softRaw(name){
+  if(name==="200G プレ") return MW.Bup;
+  return null;
+}
+function calibEps(){
+  var n=0,c=0;
+  MZEPS=0.05;
+  S.cycles.forEach(function(cy){
+    var g=czG(cy); if(!g) return;
+    mzCol=[]; try{ modeJudge(cy) }catch(e){} var L=mzCol; mzCol=null;
+    L.forEach(function(w){
+      if(!w.some(function(x){ return x===0 })) return;
+      var ceil=0;
+      w.forEach(function(x,i){ if(x>0&&MTEN[i]>ceil) ceil=MTEN[i] });
+      n++; if(g>ceil) c++;
+    });
+  });
+  MZCAL={n:n,c:c};
+  MZEPS=(c+1)/(n+20);
+  return MZCAL;
+}
 function modeJudge(c){
+  if(MEMO&&MZSKIP===null&&!mzCol){
+    var hit=MEMO.m.get(c); if(hit) return hit;
+    var r=modeJudge0(c); MEMO.m.set(c,r); return r;
+  }
+  return modeJudge0(c);
+}
+function modeJudge0(c){
   c=c||S.cur;
   var MP=modePrior(c);
   var B=bayes(MP.p), rem=null, hv=[];
+  /* 答え合わせ用。MZSKIP の名前の根拠だけ抜いて推定し直す */
+  var add0=B.add;
+  B.add=function(n,note,w){ if(MZSKIP!==null&&n===MZSKIP) return; return add0(n,note,w) };
   MODEITEMS.forEach(function(o){
     var n=c[o.k]||0; if(n<=0) return;
-    if(o.m) B.add(o.lab,n+"回・"+o.note,pw(soften(o.m),n));
+    var w0=o.m?pw(mzk(softW(o.lab,o.m)),n):null;
+    /* 「出てから○G以内に当選」の示唆は、周期の始め（0G）から○G以内に節目があるモードほど重くする。
+       各モードの節目の重みのうち、○G以内に入る割合を掛ける。天国は天井100Gなので必ず入る */
+    if(o.lim){
+      var lw=[0,1,2,3,4,5].map(function(mi){
+        var t=0,inn=0;
+        ZG.forEach(function(gg,i){ t+=ZONEW[i][mi]; if(gg<=o.lim) inn+=ZONEW[i][mi] });
+        return MTEN[mi]<=o.lim?1:(t>0?inn/t:0);
+      });
+      w0=(w0||[1,1,1,1,1,1]).map(function(x,i){ return x*lw[i] });
+    }
+    if(w0) B.add(o.lab,n+"回・"+o.note+softTag(o.lab),w0);
     if(o.rem!==undefined){ if(rem===null||o.rem<rem) rem=o.rem }
   });
   /* 前兆発生ゲーム数によるモード示唆 */
@@ -2134,28 +2429,24 @@ function modeJudge(c){
   ];
   R.forEach(function(r){
     var i=iz(r[0]); if(i<0) return;
-    if(zEn(c,i)===r[1]) B.add(r[0]+"G "+ZEN[r[1]],r[3],soften(r[2]));
+    if(zEn(c,i)===r[1]){ var rn=r[0]+"G "+ZEN[r[1]]; B.add(rn,r[3]+softTag(rn),mzk(softW(rn,r[2]))) }
   });
-  /* 前兆なしの示唆。「無」を押して明示したときは公表どおり濃厚として扱う。
-     押していないだけ（未入力）のときは入力漏れと区別できないので、節目を通り過ぎた
-     場合に限り弱い重みだけ掛ける */
+  /* 前兆なしの示唆（前兆は最初から「無」） */
   var gpass=zoneNowG(c);
   var RN=[
     [200,MW.TJonly,[1,1,1,1,3,1],"天国準備濃厚"],
     [400,MW.Conly ,[1,1,3,1,1,1],"通常C濃厚"]
   ];
+  /* 前兆は最初から「無」。その節目を通り過ぎて（後の節目で当たった・前兆が来た・招待状が来た）
+     プレ／上空に切り替えていなければ「前兆なし」として公表どおり濃厚で扱う */
   RN.forEach(function(r){
     var i=iz(r[0]); if(i<0) return;
-    if(zEn(c,i)===1){
-      B.add(r[0]+"G 前兆なし","「無」を押して明示したので"+r[3],soften(r[1]));
-    }else if(zEn(c,i)===0&&gpass>r[0]){
-      B.add(r[0]+"G 前兆なし（推定）",
-        r[0]+"Gを通過したが印が無い。入力漏れと区別できないので"+r[3]+"を弱めに掛ける",r[2]);
-    }
+    var e=zEn(c,i);
+    if(e===1||(e===0&&gpass>r[0])) B.add(r[0]+"G 前兆なし",r[0]+"Gを通過して前兆が無かったので"+r[3],mzk(r[1]));
   });
   /* 50Gで東京上空へ移行しハズレで終わった周期 → 天国濃厚 */
   if(zEn(c,iz(50))===3 && c.at===0 && czOfCyc(c).total>0)
-    B.add("50Gで上空→ハズレ","天国濃厚",soften(MW.V));
+    B.add("50Gで上空→ハズレ","天国濃厚",mzk(MW.V));
   /* ★CZが当たった節目そのものをモードの尤度にする（モード別ゾーン期待度） */
   var hitG=[];
   ZG.forEach(function(gg,i){
@@ -2180,6 +2471,19 @@ function modeJudge(c){
     var o=INVALL[e.i];
     if(o&&o.rem!==undefined){ var a2=e.g+o.rem; if(absLim===null||a2<absLim) absLim=a2 }
   });
+  /* レア役から当たった周期。当たったGより手前の節目では規定ゲーム数に届いていないので、
+     各モードの節目の重みのうち、当たったGより先にある割合を掛ける */
+  var gR=0;
+  (c.kzl||[]).forEach(function(e){ if((e.r|0)>=2&&(e.g|0)>gR) gR=e.g|0 });
+  if(gR>0&&!czG(c)){
+    var wr=[0,1,2,3,4,5].map(function(mi){
+      var t=0,out=0;
+      ZG.forEach(function(gg,i){ t+=ZONEW[i][mi]; if(gg>gR) out+=ZONEW[i][mi] });
+      return t>0?out/t:0;
+    });
+    if(wr.some(function(x){ return x>0 }))
+      B.add("レア役で当選（"+gR+"G）","それより手前の節目では当たっていないので、"+gR+"Gより先に節目があるモードほど重い",wr);
+  }
   /* 招待状が「○G以内」を予告していたら、その範囲に節目があるモードだけを残す。
      残っている節目のうち、予告の範囲に入る重みの割合を尤度にする */
   if(absLim!==null){
@@ -2197,7 +2501,7 @@ function modeJudge(c){
       B.add("招待状の予告",absLim+"Gまでに当たる見込み（残っている節目に占める割合）",lw);
   }
   var r=B.done();
-  r.rem=rem; r.absLim=absLim; r.hv=hv; r.g=g; r.isReset=!!c.isReset; r.hitG=hitG;
+  r.rem=rem; r.absLim=absLim; r.hv=hv; r.g=g; r.isReset=!!c.isReset; r.hitG=hitG; r.prior=MP.p;
   r.prWhy=MP.why;
   return r;
 }
@@ -2246,7 +2550,7 @@ function renderZone(){
     var e=zEn(S.cur,i), z=zCz(S.cur,i), iv=invAtG(S.cur,g);
     var pick=(S.invPick===i);
     return '<div class="zcol"><div class="zhead">'+g+'</div>'+
-      '<button class="zcell'+(e?" "+ZENC[e]:"")+'" data-z="'+i+'" data-zr="0">'+ZEN[e]+'</button>'+
+      '<button class="zcell'+(e>=2?" "+ZENC[e]:" zdef")+'" data-z="'+i+'" data-zr="0">'+(e>=2?ZEN[e]:"無")+'</button>'+
       '<button class="zcell'+(z?" "+ZCZC[z]:"")+'" data-z="'+i+'" data-zr="1">'+ZCZ[z]+'</button>'+
       '<button class="zcell'+(iv?" zi1":"")+(pick?" zpick":"")+'" data-zinv="'+i+'">'+
       (pick?"手紙":(iv?("手"+(iv>1?iv:"")):"−"))+'</button>'+
@@ -2286,7 +2590,8 @@ function stateGridHTML(am){
 function koyGridHTML(am){
   var key=(am?"a":"")+S.state, box=(S.cur.koy||{})[key]||{};
   return KOYAKU.map(function(y){
-    return '<button class="tile kKo'+((box[y.k]||0)>0?" on":"")+'" data-k="'+y.k+
+    var rc=(!am&&(y.k==="sc"||y.k==="ch"||y.k==="kt"))?" rec":"";
+    return '<button class="tile kKo'+rc+((box[y.k]||0)>0?" on":"")+'" data-k="'+y.k+
       '" data-ctx="koyaku"><span class="lab">'+y.lab+
       '</span><span class="val num">'+(box[y.k]||0)+'</span>'+
       ((y.k==="sk"&&!am)?'<span class="cap">加算を選ぶ</span>':'')+'</button>';
@@ -2308,7 +2613,7 @@ function renderStage(){
   var g=document.getElementById("stgG"); if(!g) return;
   g.innerHTML=STAGE.map(function(o,i){
     var on=(Number(S.stgCur||0)===i+1);
-    return '<button class="tile kSel'+(on?" on":"")+'" data-k="'+o.k+'" data-ctx="cur">'+
+    return '<button class="tile kSel'+(on?" on":"")+(o.k!=="stS"?" rec":"")+'" data-k="'+o.k+'" data-ctx="cur">'+
       '<span class="lab">'+o.lab+'</span>'+
       '<span class="val num">'+Number(S.cur[o.k]||0)+'</span>'+
       '<span class="cap">'+o.cap+'</span></button>';
@@ -2406,7 +2711,14 @@ function renderKoyaku(){
   renderStage();
 
   /* 通常時シート。最後のタイルはATシートへ移る入口 */
-  document.getElementById("stateBtns").innerHTML=stateGridHTML(false);
+  /* 記録用を隠しているときは、ステージの行を消して精神世界を状態の行の空きマスに入れる */
+  var seiT="";
+  if(!recOn()){
+    var so=STAGE.filter(function(o){ return o.k==="stS" })[0];
+    if(so) seiT='<button class="tile kSel'+(Number(S.stgCur||0)===STAGE.indexOf(so)+1?" on":"")+'" data-k="stS" data-ctx="cur">'+
+      '<span class="lab">'+so.lab+'</span><span class="val num">'+Number(S.cur.stS||0)+'</span><span class="cap">'+so.cap+'</span></button>';
+  }
+  document.getElementById("stateBtns").innerHTML=stateGridHTML(false)+seiT;
   var hg=document.getElementById("hatsuG");
   if(hg) hg.innerHTML=
     HATSU.map(function(o){ return tileHTML(o,(S[o.k]||0),null,"") }).join("")+
@@ -3058,6 +3370,113 @@ function renderMai(){
     : 'AT中にレア役で上乗せしたら、契機を選んで枚数を押す。何の小役で何枚乗ったかが1件ずつ残る。';
 }
 /* 今の推定から「打つか止めるか」の判断材料を1行で出す */
+/* 設定の見立てを1文で。最有力が5割未満なら「絞れていない」と言う */
+function setVerdict(j){
+  var post=j.post||[], top=0, ti=0;
+  post.forEach(function(x,i){ if(x>top){ top=x; ti=i } });
+  var high=(post[3]||0)+(post[4]||0)+(post[5]||0), low=(post[0]||0)+(post[1]||0);
+  var head=top>=0.5
+    ? '設定'+(ti+1)+'の可能性が高い（'+(top*100).toFixed(0)+'％）'
+    : 'まだ設定は絞れていない（一番高い設定'+(ti+1)+'でも'+(top*100).toFixed(0)+'％）';
+  return {top:top,ti:ti,high:high,low:low,head:head};
+}
+var CONFNOTE={低:"設定1と6のCZ回数の差が偶然の揺れより小さい。数字は参考程度",
+  中:"差が偶然の揺れの1〜2倍。傾向として見る",高:"差が偶然の揺れの2倍以上か、濃厚系が出ている"};
+function confLine(j){
+  return '確度 <b class="hot">'+j.conf+'</b> … '+CONFNOTE[j.conf]+
+    '（今 '+(j.zsep||0).toFixed(1)+'倍。中まで約'+j.gNeed1.toLocaleString()+'G、高まで約'+j.gNeed2.toLocaleString()+'G）。';
+}
+/* ========== 記録用（判定に使わない入力）の出し入れ ========== */
+var RECKEY="ghoul-recshow", recShow=null;
+function recOn(){
+  if(recShow==null){ try{ recShow=(localStorage.getItem(RECKEY)==="1") }catch(e){ recShow=false } }
+  return recShow;
+}
+function renderRec(){
+  recOn();
+  document.body.classList.toggle("recOff",!recShow);
+  var n=document.querySelectorAll(".rec").length;
+  [].forEach.call(document.querySelectorAll("[data-rectog]"),function(b){
+    b.textContent=recShow?"記録用の入力（判定に使わない）を隠す ▲":"記録用の入力（判定に使わない）も出す ▼";
+  });
+}
+function recToggle(){
+  recShow=!recOn();
+  try{ localStorage.setItem(RECKEY,recShow?"1":"0") }catch(e){}
+  render();
+}
+/* ========== 押し忘れの候補 ==========
+   ・当たった節目（または前兆を入れた節目）より手前の節目が空欄なら押し忘れの候補。
+     何も無かった節目は「まとめて無」の1回押しで全部埋まる（かんたん入力でも出す）
+   ・周期が2つ目以降なのに、今の周期のアイキャッチが空なら押し忘れ（デフォルトの金木研も押す）
+   ・3周期以上記録したのに総Gを打っていなければ知らせる（判定が1/2の強さのまま） */
+function forgotList(){
+  var c=S.cur, L=[], reach=0;
+  ZG.forEach(function(g,i){ if(zEn(c,i)||zCz(c,i)) reach=Math.max(reach,g) });
+  /* 前兆は最初から「無」なので、空欄の押し忘れは無い（前兆が来たときだけ押す） */
+  if(!simpMode&&S.cycles.length>0&&!EYE.some(function(o){ return (c[o.k]||0)>0 })) L.push({k:"eye",lab:"アイキャッチ"});
+  if(S.cycles.length>=3&&!tgReal()) L.push({k:"tg",lab:"総G（データカウンター）"});
+  return L;
+}
+function renderForgot(){
+  var L=forgotList();
+  [].forEach.call(document.querySelectorAll(".forgot"),function(x){ x.classList.remove("forgot") });
+  var mark=function(sel){ [].forEach.call(document.querySelectorAll(sel),function(x){ x.classList.add("forgot") }) };
+  L.forEach(function(o){
+    if(o.k==="eye"){ mark("#pEye"); mark("#simpEyeG") }
+    else if(o.k==="tg"){ mark("#tg"); mark("#tg2"); mark("#tg3") }
+    else if(o.k==="zall") o.idx.forEach(function(i){ mark('[data-z="'+i+'"][data-zr="0"]') });
+  });
+  var h=L.length?'<div class="fgbar">押し忘れ？ '+L.map(function(o){
+    return o.lab+(o.k==="zall"?'<button data-fg="znone">まとめて無</button>':'')+
+      '<button data-fg="'+o.k+'">'+(o.k==="zall"?"確かめる":"入れる")+'</button>' }).join("　")+'</div>':"";
+  ["fgTop","simpForgot"].forEach(function(id){ var el=document.getElementById(id); if(el) el.innerHTML=h });
+}
+function fgGo(k){
+  if(k==="eye"){
+    if(simpMode){ var se=document.getElementById("simpEyeG"); if(se) (se.scrollIntoView&&se.scrollIntoView({behavior:"smooth",block:"center"})); return }
+    openGo("sEye","pEye","bEye"); return;
+  }
+  if(k==="tg"){ var t=document.getElementById(simpMode?"tg3":"tg"); if(t){ (t.scrollIntoView&&t.scrollIntoView({behavior:"smooth",block:"center"})); try{ t.focus() }catch(e){} } return }
+  if(k==="znone"){
+    /* 空欄の節目を全部「無」にする。CZや前兆を入れた節目には触らない */
+    var it=forgotList().filter(function(o){ return o.k==="zall" })[0]; if(!it) return;
+    /* 200G・400Gの「無」はモード判定に強く効くので、含むときだけ確かめる */
+    var strong=it.idx.filter(function(i){ return ZG[i]===200||ZG[i]===400 }).map(function(i){ return ZG[i]+"G" });
+    if(strong.length&&!confirm(strong.join("・")+" を「前兆なし」にすると、"+
+      (strong.indexOf("200G")>=0?"200G無＝天国準備濃厚":"")+(strong.length>1?"、":"")+(strong.indexOf("400G")>=0?"400G無＝通常C濃厚":"")+
+      " として強く効く。その節目を見ていて、前兆が無かったのは確かか？")) return;
+    it.idx.forEach(function(i){ zSet(S.cur,i,0,1) });
+    save(); render();
+    say(it.idx.map(function(i){ return ZG[i] }).join("・")+"G を「無（前兆なし）」にした。","#34d399"); sayClear(4000);
+    return;
+  }
+  if(simpMode){
+    /* かんたん入力では、空欄の一番手前の節目を選んだ状態にする */
+    var it2=forgotList().filter(function(o){ return o.k==="zall" })[0];
+    if(it2&&it2.idx.length){ simpIdx=it2.idx[0]; render() }
+    var zg3=document.getElementById("simpZenG"); if(zg3) (zg3.scrollIntoView&&zg3.scrollIntoView({behavior:"smooth",block:"center"}));
+    return;
+  }
+  var z=document.getElementById("zoneTab");
+  if(z) (z.scrollIntoView&&z.scrollIntoView({behavior:"smooth",block:"center"}));
+}
+/* ========== 今のモードの1位を常に出す帯 ========== */
+function renderModeBar(){
+  var el=document.getElementById("modeBar"); if(!el) return;
+  if(tab!=="normal"&&tab!=="hantei"&&tab!=="at"){ el.innerHTML=""; return }
+  var r=modeJudge(S.cur), O=modeOrder(r);
+  var j=judge(), sp=j.post||[], si=0;
+  sp.forEach(function(x,i){ if(x>sp[si]) si=i });
+  var lo=((sp[0]||0)+(sp[1]||0))*100, hi=((sp[3]||0)+(sp[4]||0)+(sp[5]||0))*100;
+  /* 確度が低いうちは1位の設定を出さない（横並びの20％前後を「1位」と言うと誤解を招く） */
+  var sLine=!j.touched ? '設定 まだ判断材料が無い'
+    : j.conf==="低" ? '設定 判断保留（確度低）／1〜2 '+lo.toFixed(0)+'％・4〜6 '+hi.toFixed(0)+'％'
+    : '設定 1位 <b>設定'+(si+1)+'</b> '+((sp[si]||0)*100).toFixed(0)+'％／1〜2 '+lo.toFixed(0)+'％・4〜6 '+hi.toFixed(0)+'％・確度'+j.conf;
+  el.innerHTML='<div class="abar"><span>モード 1位 <b>'+MODES[O[0].i]+'</b> '+(O[0].p*100).toFixed(0)+'％'+
+    '／2位 '+MODES[O[1].i]+' '+(O[1].p*100).toFixed(0)+'％'+
+    (r.touched?'':'（出発点）')+'<br>'+sLine+'</span></div>';
+}
 /* ========== 打ち切り判定の自動アラート ========== */
 var alertOff="";          /* 一度消したアラートの内容。中身が変わればまた出る */
 function renderAlert(){
@@ -3065,15 +3484,17 @@ function renderAlert(){
   var j=judge(), post=j.post||[];
   var low=(post[0]||0)+(post[1]||0), high=(post[3]||0)+(post[4]||0)+(post[5]||0);
   var h="", key="";
+  /* 材料が少ないうちは偶然で70%を超えることがあるので鳴らさない */
+  if(j.conf==="低"){ bar.style.display="none"; bar.innerHTML=""; return }
   if(j.touched&&low>=0.70){
     key="cut"+Math.round(low*20);
     h='<div class="abar cut"><span>⚠ 低設定（1〜2）が '+(low*100).toFixed(0)+
-      '％。<b>見切りを検討</b>。期待機械割 '+j.payout.toFixed(1)+'%</span>'+
+      '％（確度'+j.conf+'）。<b>見切りを検討</b>。期待機械割 '+j.payout.toFixed(1)+'%</span>'+
       '<button class="x" data-abar="1">✕</button></div>';
   }else if(j.touched&&high>=0.80){
     key="go"+Math.round(high*20);
     h='<div class="abar go"><span>◎ 高設定（4〜6）が '+(high*100).toFixed(0)+
-      '％。<b>続行</b>。期待機械割 '+j.payout.toFixed(1)+'%</span>'+
+      '％（確度'+j.conf+'）。<b>続行</b>。期待機械割 '+j.payout.toFixed(1)+'%</span>'+
       '<button class="x" data-abar="1">✕</button></div>';
   }
   if(!h) alertOff="";
@@ -3304,7 +3725,7 @@ function renderRun(){
     '<br>今の内容 … 総G '+q.tg.toLocaleString()+'／通常G '+q.ng.toLocaleString()+
     '／AT中G '+q.ag.toLocaleString()+'／差枚 '+fmtS(q.sa)+
     '<br>CZ '+q.cz+'回 ／ AT '+q.at+'回（エピボ '+q.ep+'・直撃 '+q.dr+'）／ 周期 '+q.cy+'件'+
-    '<br>判定 … 設定'+q.bs+'が最有力（'+q.bp+'％）／期待機械割 '+q.py.toFixed(1)+'%'+
+    '<br>判定 … 一番高いのは設定'+q.bs+'（'+q.bp+'％）／期待機械割 '+q.py.toFixed(1)+'%'+
     '<br>「実戦終了・保存」を押すと上の内容が1件として残る。カウンターの数字は消えない。';
   var L=runList();
   document.getElementById("runList").innerHTML=L.length===0
@@ -3453,7 +3874,8 @@ function renderHist(){
   if(bars) bars.innerHTML=barsHTML(r,["1","2","3","4","5","6"],COL);
   var czn=histV("hRm")+histV("hRz"), atn=histV("hAt");
   box.innerHTML=
-    '<b class="hot">台の通算では 設定'+(ti+1)+'が最有力（'+(top*100).toFixed(0)+'％）。</b>'+
+    '<b class="hot">台の通算では '+(top>=0.5?'設定'+(ti+1)+'の可能性が高い（'+(top*100).toFixed(0)+'％）':
+      'まだ設定は絞れていない（一番高い設定'+(ti+1)+'でも'+(top*100).toFixed(0)+'％）')+'。</b>'+
     '高設定（4〜6）'+(high*100).toFixed(0)+'％／低設定（1〜2）'+(low*100).toFixed(0)+'％／期待機械割 '+pay.toFixed(1)+'%。'+
     (low>=0.7?' <b style="color:#fca5a5">座らない方が良い。</b>':high>=0.7?' <b style="color:#6ee7b7">狙い目。</b>':' <b style="color:#fbbf24">まだ材料が少ない。</b>')+
     '<br>実測 … CZ '+(czn?"1/"+Math.round(tg/czn):"—")+'（'+czn+'回）'+
@@ -3528,9 +3950,15 @@ function simpDiffVal(k){
   if(k.indexOf("sei")===0) return trSum(k);
   return Number(S[k]||0);
 }
+/* かんたん入力で出す「節目以外の当たり」。それ以外の設定差（下段リプ・精神世界など）は詳しい入力で */
+var SIMPHIT=["epi","direct"];
+/* 濃厚示唆＝候補の設定を切る（0を含む）ものだけ */
+var simpNkOpen=false;
+function judgedM(o){ return !!(o.m||o.lim||o.rem!==undefined) }
+function nkOnly(list){ return list.filter(function(o){ return o.w&&o.w.some(function(x){ return x===0 }) }) }
 function renderSimpDiff(){
   var g=document.getElementById("simpDiffG"); if(!g) return;
-  g.innerHTML=SIMPD.map(function(o){
+  g.innerHTML=SIMPD.filter(function(o){ return SIMPHIT.indexOf(o.k)>=0 }).map(function(o){
     var v=simpDiffVal(o.k);
     return '<button class="tile'+(v>0?" on":"")+'" data-simpd="'+o.k+'">'+
       '<span class="lab">'+o.lab+'</span><span class="val num">'+v+'</span>'+
@@ -3553,6 +3981,32 @@ function renderSimple(){
   }
   var i=simpCurIdx();
   var g=document.getElementById("simpG"); if(g) g.textContent=ZG[i];
+  var zg=document.getElementById("simpZenG");
+  if(zg){
+    var zv=zEn(S.cur,i);
+    zg.innerHTML=[[0,"前兆なし"],[2,"プレ前兆"],[3,"東京上空"]].map(function(x){
+      var on=(x[0]===0)?(zv<2):(zv===x[0]);
+      return '<button class="tile'+(on?" on":"")+'" data-simpz="'+x[0]+'"><span class="lab">'+x[1]+'</span></button>';
+    }).join("");
+  }
+  ["simpInvAt","simpHitAt"].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent=ZG[i]+"G" });
+  var nkb=document.getElementById("simpNkG"), nkt=document.getElementById("simpNkTog");
+  if(nkb) nkb.style.display=simpNkOpen?"block":"none";
+  if(nkt) nkt.textContent=simpNkOpen?"④ 濃厚示唆 をたたむ ▲":"④ 濃厚示唆（出たときだけ開く） ▼";
+  if(simpMode){
+    /* かんたん入力は判定に効くものだけ（デフォルト・本前兆期待度など、判定に入らないものは出さない） */
+    fill("simpEyeG",EYE.filter(judgedM),S.cur,"cur","xs");
+    fill("simpInvG",INVM.filter(judgedM).concat(INVS.filter(function(o){ return nkOnly([o]).length })),S.cur,"cur","xs");
+    var nk=document.getElementById("simpNkG");
+    if(nk){
+      var grp=[["CZ失敗カード",nkOnly(CARDS),S.cur,"cur"],["AT終了画面",nkOnly(ATEND),S,null],
+        ["EDカード",nkOnly(ED),S,null],["トロフィー",nkOnly(TRO),S,null],["獲得枚数",MAI,S,null]];
+      nk.innerHTML=grp.map(function(x){
+        return '<div class="nkrow"><span class="nkh">'+x[0]+'</span>'+
+          x[1].map(function(o){ return tileHTML(o,(x[2][o.k]||0),x[3],"xs") }).join("")+'</div>';
+      }).join("");
+    }
+  }
   var t3=document.getElementById("tg3");
   if(t3&&document.activeElement!==t3) t3.value=S.tg||"";
   var box=document.getElementById("simpBox");
@@ -3562,15 +4016,9 @@ function renderSimple(){
     var low=(post[0]||0)+(post[1]||0), high=(post[3]||0)+(post[4]||0)+(post[5]||0);
     var zc=zCz(S.cur,i), ze=zEn(S.cur,i);
     box.innerHTML=
-      '今の節目 <b class="hot">'+ZG[i]+'G</b>（'+(zc?ZCZ[zc]:ze?ZEN[ze]:"未入力")+'）。'+
-      '◀▶ で節目を選んでから、入ったCZのボタンを押す。'+
-      '<br>'+(j.touched
-        ? '今の見立て … <b class="hot">設定'+(ti+1)+'（'+(top*100).toFixed(0)+'％）</b>'+
-          '／高設定 '+(high*100).toFixed(0)+'％・低設定 '+(low*100).toFixed(0)+'％'+
-          (low>=0.7?' <b style="color:#fca5a5">見切り検討</b>':high>=0.7?' <b style="color:#6ee7b7">続行</b>':'')
-        : 'まだ判断材料が無い。CZに入った節目を押すと推定が動く。')+
-      '<br>確定 '+S.cycles.length+'周期 ／ CZ '+czTot().total+'回 ／ 総G '+Number(S.tg||0)+
-      '<br>細かい入力（小役・演出・穢れ・AT中）は「詳しい入力に戻す」で出る。';
+      '節目 <b class="hot">'+ZG[i]+'G</b>（'+(zc?ZCZ[zc]:ze>=2?ZEN[ze]:"前兆なし")+'）／確定 '+S.cycles.length+'周期・CZ '+czTot().total+'回'+
+      (j.touched&&j.conf!=="低"&&low>=0.7?' <b style="color:#fca5a5">見切り検討</b>':
+        j.touched&&j.conf!=="低"&&high>=0.7?' <b style="color:#6ee7b7">続行</b>':'');
   }
 }
 
@@ -3581,19 +4029,25 @@ function renderAim(){
   post.forEach(function(x,i){ if(x>top){ top=x; ti=i } });
   var high=(post[3]||0)+(post[4]||0)+(post[5]||0);
   var low=(post[0]||0)+(post[1]||0);
-  var tg=tgUse(), ng=Number(S.ng||0);
+  var tg=tgReal(), ng=Number(S.ng||0);
   var cz=czTot().total;
-  var at=S.cycles.filter(function(c){ return c.at }).length+Number(S.epi||0)+Number(S.direct||0);
+  /* エピボと直撃は確定した周期のATに含まれているので足さない */
+  var at=S.cycles.filter(function(c){ return c.at }).length;
   var czR=(tg&&cz)?tg/cz:0, atR=(tg&&at)?tg/at:0;
   var msgs=[];
   /* 設定の見立て */
   if(!j.touched) msgs.push('<b class="hot">まだ判断材料が無い。</b>ゾーン表・小役・演出のどれかを入れると推定が動く。');
   else{
-    msgs.push('<b class="hot">設定'+(ti+1)+'が最有力（'+(top*100).toFixed(0)+'％）。</b>'+
+    var v=setVerdict(j);
+    msgs.push('<b class="hot">'+v.head+'。</b>'+
       '高設定（4〜6）の合計 '+(high*100).toFixed(0)+'％／低設定（1〜2）の合計 '+(low*100).toFixed(0)+'％。');
-    if(high>=0.6) msgs.push('<b style="color:#6ee7b7">高設定寄り。続行。</b>');
+    msgs.push(confLine(j));
+    if(j.conf==="低") msgs.push('<b style="color:#fbbf24">まだ判断しない。材料を増やす。</b>');
+    else if(high>=0.6) msgs.push('<b style="color:#6ee7b7">高設定寄り。続行。</b>');
     else if(low>=0.6) msgs.push('<b style="color:#fca5a5">低設定寄り。見切りを検討。</b>');
     else msgs.push('<b style="color:#fbbf24">まだ分からない。あと数周期は回して材料を増やす。</b>');
+    if(!j.tgReal) msgs.push('<span style="color:#8fa3bd">総Gが推定のままなので、CZ確率と下段リプレイは1/2の強さで入れている。'+
+      'データカウンターの総Gを手入力すると全部の強さで入る。</span>');
   }
   /* 実測の確率と目安 */
   if(tg>0){
@@ -3634,7 +4088,7 @@ function renderAim(){
 }
 function renderHantei(){
   renderRank(); renderMai(); renderAim(); renderMemo();
-  renderAlert(); renderCycTab(); renderSimple(); renderSimpAt(); renderHist();
+  renderAlert(); renderModeBar(); renderCycTab(); renderSimple(); renderSimpAt(); renderHist();
   renderEst(); renderRun(); renderZb(); renderPl(); renderZbScan(); renderEdTop();
   renderSimpDiff(); renderSaChart();
   renderBattle(); renderKegare(); renderRtbl(); renderArima();
@@ -3662,7 +4116,7 @@ function renderHantei(){
             troLab(e.g)+'</span>';
         }).join("")+'</div>'+
         '<div style="margin-top:3px">直近に押したトロフィーと、その総Gを組にして残す（全'+TL.length+'件）。</div>'
-      : 'トロフィーのボタンを押したあと、ここでその時の総Gを押す。何ゲームで出たかが残る。';
+      : 'トロフィーを押すと、その時の総Gで自動で残る。';
   }
   fill("edG",ED,S,null,"xs");
   var en=document.getElementById("edNote");
@@ -3682,7 +4136,7 @@ function renderHantei(){
   var open=document.getElementById("jt").getAttribute("aria-expanded")==="true";
   document.getElementById("jsum").innerHTML=j.touched
     ? '4以上 <b class="num" style="color:#67e8f9;font-size:15px">'+(j.high*100).toFixed(1)+
-      '</b>% ／ 最有力 <b class="num" style="font-size:15px">'+j.best+
+      '</b>% ／ 確度 <b style="font-size:13px">'+j.conf+
       '</b> ／ <span class="num" style="color:#fcd34d">'+j.payout.toFixed(1)+'%</span> '+(open?"▲":"▼")
     : "入力待ち "+(open?"▲":"▼");
   var tg=Number(S.tg||0), ng=Number(S.ng||0)||tg;
@@ -3711,41 +4165,98 @@ function invLogHTML(c){
     '<div style="margin-top:3px">同じ文面でも受け取ったゲーム数で意味が変わる。「残り○G以内」は受け取ったGからの残りなので、上の→が実際の到達予定G。</div>';
 }
 /* 今のモードの見立て。設定判別の「今の狙い目」と同じ形式で出す */
+/* ==== モード判別の根拠を アイキャッチ → 招待状 → 節目の前兆 → その他 の順に分ける ==== */
+var MGRP=["アイキャッチ","招待状","節目の前兆","その他"];
+function facGroup(f){
+  var n=f.name||"";
+  if(EYE.some(function(o){ return o.lab===n })) return 0;
+  if(INVM.some(function(o){ return o.lab===n })||n.indexOf("招待状")===0) return 1;
+  if(/^\d+G( |で)/.test(n)&&/上空|プレ|前兆|無/.test(n)) return 2;
+  return 3;
+}
+function facLim(f){
+  return (f.zeros&&f.zeros.length>0)
+    ? MODES.filter(function(m,i){ return f.zeros.indexOf(i)<0 }).join("・")+"に限定"
+    : MODES[f.best]+"寄り";
+}
+function modeGroupsHTML(r,maxEach){
+  var G=[[],[],[],[]];
+  (r.facs||[]).forEach(function(f){ G[facGroup(f)].push(f) });
+  return G.map(function(L,gi){
+    if(!L.length) return "";
+    return '<div style="margin-top:2px"><b style="color:#fcd34d">【'+(gi+1)+'. '+MGRP[gi]+'】</b> '+
+      L.slice(0,maxEach||9).map(function(f){
+        return '<b>'+f.name+'</b>'+(f.note?'（'+f.note+'）':'')+' → <b class="hot">'+facLim(f)+'</b>';
+      }).join('／')+'</div>';
+  }).join("");
+}
+/* 可能性が高い順の並び */
+function modeOrder(r){
+  return (r.post||[]).map(function(x,i){ return {i:i,p:x} })
+    .sort(function(a,b){ return b.p-a.p });
+}
+/* アイキャッチ → 招待状 → 節目の前兆 → その他 の順に1段ずつ足したときの順位の移り変わり */
+function modeSteps(r){
+  var p=(r.prior||[1,1,1,1,1,1]).slice(), out=[];
+  var G=[[],[],[],[]];
+  (r.facs||[]).forEach(function(f){ G[facGroup(f)].push(f) });
+  G.forEach(function(L,gi){
+    if(!L.length) return;
+    L.forEach(function(f){ p=p.map(function(x,i){ return x*((f.w||[])[i]||0) }) });
+    var sm=p.reduce(function(a,b){return a+b},0);
+    if(!(sm>0)) return;
+    var q=p.map(function(x){ return x/sm });
+    var o=q.map(function(x,i){ return {i:i,p:x} }).sort(function(a,b){ return b.p-a.p });
+    out.push({g:MGRP[gi],o:o});
+  });
+  return out;
+}
+function modeStepsHTML(r){
+  var st=modeSteps(r);
+  if(!st.length) return "";
+  return '<div style="margin-top:2px">参考にする順に足したときの順位</div>'+st.map(function(x,k){
+    return '<div>'+(k?'→ ':'')+'<b style="color:#fcd34d">'+x.g+'まで</b> … '+
+      x.o.slice(0,3).map(function(o,j){ return (j+1)+'位 '+MODES[o.i]+' '+(o.p*100).toFixed(0)+'％' }).join('／')+'</div>';
+  }).join("");
+}
+function modeRankHTML(r){
+  return modeOrder(r).map(function(o,k){
+    return '<span style="white-space:nowrap">'+(k+1)+'位 <b style="color:'+MCOL[o.i]+'">'+MODES[o.i]+
+      '</b> '+(o.p*100).toFixed(0)+'％</span>';
+  }).join('　');
+}
 function renderModeAim(){
   var el=document.getElementById("mAim"); if(!el) return;
   var r=modeJudge(S.cur);
-  var post=r.post||[], top=0, ti=0;
-  post.forEach(function(x,i){ if(x>top){ top=x; ti=i } });
+  var O=modeOrder(r), ti=O[0].i, top=O[0].p, post=r.post||[];
   var nowG=zoneNowG(S.cur);
   var ZONEHINT=["600G以降まで重い","300G前後","400G前後","200G前後","100〜300G","100G以内"];
   var L=[];
+  L.push('<b class="hot">可能性が高い順</b><br>'+modeRankHTML(r));
   if(!r.touched){
-    el.innerHTML=(r.prWhy
-      ? '<b class="hot">'+r.prWhy+'</b>として出発している。今のところ最有力は <b>'+(MODES[ti]||"?")+
-        '（'+(top*100).toFixed(0)+'％）</b>。<br>'
-      : '')+
-      'この周期の入力はまだ無い。ゾーン表の節目・前兆・招待状のどれかを入れると推定が動く。';
+    el.innerHTML=L.join('<br>')+'<br>'+(r.prWhy?'出発点 … <b class="hot">'+r.prWhy+'</b>。<br>':'')+
+      'この周期の入力はまだ無い。アイキャッチ → 招待状 → 節目の前兆 の順に見て入れると推定が動く。';
     return;
   }
-  /* 天国系の合計と、深いモードの合計 */
   var ten=(post[4]||0)+(post[5]||0), deep=(post[0]||0)+(post[1]||0);
-  L.push('<b class="hot">モード '+(MODES[ti]||"?")+' が最有力（'+(top*100).toFixed(0)+'％）。</b>'+
-    '天国系（天国準備＋天国）の合計 '+(ten*100).toFixed(0)+'％／深いモード（通常A＋通常B）の合計 '+(deep*100).toFixed(0)+'％。');
-  if(ten>=0.5) L.push('<b style="color:#6ee7b7">浅い当たりが期待できる。'+ZONEHINT[ti]+'まで回す。</b>');
-  else if(deep>=0.6) L.push('<b style="color:#fca5a5">深いモード寄り。'+ZONEHINT[ti]+'。天井まで見るか判断する。</b>');
-  else L.push('<b style="color:#fbbf24">まだ絞れない。次の当たりの目安は '+ZONEHINT[ti]+'。</b>');
-  /* 根拠を上位3つだけ、設定判別と同じ言い方で並べる */
-  if(r.facs&&r.facs.length){
-    L.push('根拠 … '+r.facs.slice(0,3).map(function(f){
-      var lim=(f.zeros&&f.zeros.length>0)
-        ? MODES.filter(function(m,i){ return f.zeros.indexOf(i)<0 }).join("・")+"に限定"
-        : MODES[f.best]+"寄り";
-      return '<b>'+f.name+'</b>（'+f.note+'）なので <b class="hot">'+lim+'</b>';
-    }).join('／'));
-  }
+  L.push('天国系（天国準備＋天国）の合計 '+(ten*100).toFixed(0)+'％／深いモード（通常A＋通常B）の合計 '+(deep*100).toFixed(0)+'％。');
+  /* モードは確定させない。1位が5割を超えていても「可能性が高い」までにとどめる */
+  if(top<0.5) L.push('<b style="color:#fbbf24">まだ1つに絞れない。上位2つ（'+MODES[O[0].i]+'・'+MODES[O[1].i]+'）を両方想定して回す。</b>');
+  else if(ten>=0.5) L.push('<b style="color:#6ee7b7">浅い当たりの可能性が高い。'+ZONEHINT[ti]+'まで回す。</b>');
+  else if(deep>=0.6) L.push('<b style="color:#fca5a5">深いモードの可能性が高い。'+ZONEHINT[ti]+'。天井まで見るか判断する。</b>');
+  else L.push('<b style="color:#fbbf24">1位の目安は '+ZONEHINT[ti]+'。2位（'+MODES[O[1].i]+'）の可能性も残る。</b>');
+  L.push(modeStepsHTML(r));
+  L.push('根拠（アイキャッチ → 招待状 → 節目の前兆 の順）'+modeGroupsHTML(r,3));
+  var sk=Object.keys(SOFTCAL).filter(function(k){ return SOFTCAL[k].h+SOFTCAL[k].m>0 });
+  if(sk.length) L.push('<span style="color:#8fa3bd">期待度UP系の答え合わせ … '+sk.map(function(k){
+    var c=SOFTCAL[k];
+    return k+' 解析'+c.L0+'倍→記録から'+c.L.toFixed(2)+'倍（'+(c.h+c.m)+'回中'+c.h+'回当たり）';
+  }).join('／')+'</span>');
+  L.push('<span style="color:#8fa3bd">濃厚!?の外れの余地 1/'+Math.round(1/MZEPS)+'（出発点1/20、自分の記録で濃厚が'+
+    MZCAL.n+'回使われ、うち外れ'+MZCAL.c+'回）。</span>');
   if(r.prWhy) L.push('出発点 … '+r.prWhy+'として始めている。');
   if(nowG>0) L.push('今の周期は '+nowG+'G。'+(S.cur.isReset?'設定変更後は200G＋αが天井。':'天井は800G。'));
-  if(r.absLim!==null&&r.absLim!==undefined) L.push('次の節目は <b class="hot">'+r.absLim+'G</b> までに来る。');
+  if(r.absLim!==null&&r.absLim!==undefined) L.push('手紙の予告から、次の節目は <b class="hot">'+r.absLim+'G</b> までに来る見込み。');
   el.innerHTML=L.join('<br>');
 }
 function renderMode(){
@@ -3777,7 +4288,7 @@ function renderMode(){
       '<div class="row" style="margin-top:4px"><button data-ecan="1" style="flex:1;padding:6px;border-radius:9px;border:1px solid #f59e0b;color:#fbbf24;font-size:11px;font-weight:700">修正をやめる</button></div></div>'
     : '';
   document.getElementById("commitLab").textContent=
-    ed?"修正の確定（この周期の結末を選び直す）":"CZの結末と、ほかの欄へ飛ぶ";
+    ed?"修正の確定（この周期の結末を選び直す）":"CZの結末";
   document.getElementById("commitG").innerHTML=
     '<button class="tile czs" data-at="cz">'+
     '<span class="lab">CZ→外し</span>'+
@@ -3789,7 +4300,12 @@ function renderMode(){
 
   var r=modeJudge();
   renderModeAim();
-  document.getElementById("mbars").innerHTML=barsHTML(r,MODES,MCOL);
+  /* 可能性が高い順に並べる */
+  var O2=modeOrder(r);
+  document.getElementById("mbars").innerHTML=barsHTML(
+    {post:O2.map(function(o){return o.p}),touched:r.touched},
+    O2.map(function(o,k){return (k+1)+"位 "+MODES[o.i]}),
+    O2.map(function(o){return MCOL[o.i]}));
   var al="";
   if(r.conflict) al+='<div class="alert" style="background:#4a1010;border-color:#ef4444;color:#fca5a5">入力が矛盾している。すべてのモードが否定された。根拠で「限定」と出ている項目を見直す。</div>';
   if(r.absLim!==null&&r.absLim!==undefined)
@@ -3800,8 +4316,9 @@ function renderMode(){
   if(q.total>0) al+='<div class="alert" style="background:#0d2b33;border-color:#22d3ee;color:#67e8f9">この周期のCZ '+q.total+'回（レミニ'+q.remi+'／リゼ'+q.rize+'）　到達 '+czG(S.cur)+'G</div>';
   document.getElementById("mrem").innerHTML=al;
   var mo=document.getElementById("mt").getAttribute("aria-expanded")==="true";
-  document.getElementById("msum").innerHTML='最有力 <b style="color:'+MCOL[r.best]+'">'+MODES[r.best]+
-    '</b> '+(r.post[r.best]*100).toFixed(0)+'% '+(mo?"▲":"▼");
+  var O1=modeOrder(r);
+  document.getElementById("msum").innerHTML='1位 <b style="color:'+MCOL[O1[0].i]+'">'+MODES[O1[0].i]+
+    '</b> '+(O1[0].p*100).toFixed(0)+'%／2位 '+MODES[O1[1].i]+' '+(O1[1].p*100).toFixed(0)+'% '+(mo?"▲":"▼");
   document.getElementById("mfacs").innerHTML=facsHTML(r,MODES,"モード推定の根拠")+
     '<div class="note">★CZが当たった節目そのものもモードの手がかりになる。ゾーン表にCZの印を付けると、その節目のモード別期待度（☆◎○△）を尤度として自動で加える。'+
     (r.hitG&&r.hitG.length?'　今回は '+r.hitG.join("G・")+'G を使った。':'')+
@@ -3817,7 +4334,7 @@ function renderMode(){
         var r=a.res||{}, post=r.post||[], pc=0;
         post.forEach(function(x,k){ if(k===mi) pc=x });
         return '<div class="logw"><div class="log"><span><b>'+(i+1)+'回目</b> '+(czG(c)||"?")+'G ／ <b style="color:'+
-          MCOL[mi>=0?mi:0]+'">'+a.mode+'</b>'+(pc?' <span class="pc">'+(pc*100).toFixed(0)+'％</span>':'')+
+          MCOL[mi>=0?mi:0]+'">1位 '+a.mode+'</b>'+(pc?' <span class="pc">'+(pc*100).toFixed(0)+'％</span>':'')+
           ' ／ CZ'+q2.total+(q2.rize?"（リゼ"+q2.rize+"）":"")+
           (c.at?' <b style="color:#f9a8d4">▸AT</b>':' <span style="color:#8fa3bd">▸外し</span>')+
           '</span><span><button data-edit="'+i+'" style="color:#67e8f9;margin-right:8px">修正</button>'+
@@ -3826,25 +4343,35 @@ function renderMode(){
       }).join("");
 }
 /* その周期のモードをなぜそう判定したかを1行でまとめる */
+/* 確定した周期で、アイキャッチと招待状の示唆が正しかったかを、
+   その示唆を抜いて「当たった節目・前兆・天井」だけで推定し直して判定する */
+function hintCheck(c,r){
+  if(!czG(c)&&!(c.kzl||[]).some(function(e){ return (e.r|0)>=2 })) return "";
+  var out=[];
+  (r.facs||[]).forEach(function(f){
+    var g=facGroup(f); if(g>1) return;
+    var w=f.w||[], mx=Math.max.apply(null,w); if(!(mx>0)) return;
+    /* 示唆が重くしたモード（一番重いものの半分以上）を「示唆の言うモード」とする */
+    var tg=[]; w.forEach(function(x,i){ if(x>=mx*0.5) tg.push(i) });
+    if(tg.length>=6) return;
+    var q=hardPost(c); if(!q) return;
+    var m=0; tg.forEach(function(i){ m+=q[i] });
+    var v=m>=0.8?'<b style="color:#6ee7b7">正しかった</b>':m<=0.2?'<b style="color:#fca5a5">外れ</b>':'<span style="color:#fbbf24">どちらとも言えない</span>';
+    out.push(MGRP[g]+'「'+f.name+'」→ '+tg.map(function(i){ return MODES[i] }).join("・")+'の示唆は '+v+'（当たったGと天井だけで '+(m*100).toFixed(0)+'％）');
+  });
+  return out.length?'<div style="margin-top:2px">答え合わせ（当たった節目から） … '+out.join('／')+'</div>':"";
+}
 function modeWhy(c,a){
   var r=(a&&a.res)||{};
-  var F=(r.facs||[]).slice(0,3);
-  var out=[];
   if(r.conflict) return '<b style="color:#f87171">入力が矛盾している。</b>すべてのモードが否定された。ゾーン表や演出を見直す。';
-  if(!F.length) return 'モードの判断材料が無い。ゾーン表の節目・前兆・招待状・カード・アイキャッチのどれかを入れると根拠が出る。<b>'+
-    ((a&&a.mode)||"?")+'</b> は事前分布（低モードほど滞在しやすい）だけで決めた暫定値。';
-  F.forEach(function(f){
-    var keep=MODES.filter(function(m,i){ return (f.zeros||[]).indexOf(i)<0 });
-    var lim=(f.zeros&&f.zeros.length>0)
-      ? keep.join("・")+"に限定"
-      : MODES[f.best]+"寄り";
-    out.push('<b>'+f.name+'</b>'+(f.note?'（'+f.note+'）':'')+'なので '+lim);
-  });
+  var rank='可能性の順 … '+modeOrder(r).slice(0,3).map(function(o,k){
+    return (k+1)+'位 '+MODES[o.i]+' '+(o.p*100).toFixed(0)+'％';
+  }).join('／');
+  if(!(r.facs||[]).length) return rank+'<br>判断材料が無い。事前分布（低モードほど滞在しやすい）だけの暫定の順番。';
   var tail="";
-  if(r.prWhy) tail+='／出発点は「'+r.prWhy+'」';
-  if(r.absLim!==null&&r.absLim!==undefined) tail+='／次の節目は '+r.absLim+'G まで';
-  if(r.rem!==null&&r.rem!==undefined&&r.rem!=="") tail+='';
-  return out.join('／')+tail+'。';
+  if(r.prWhy) tail+='<br>出発点は「'+r.prWhy+'」';
+  if(r.absLim!==null&&r.absLim!==undefined) tail+='<br>手紙の予告から次の節目は '+r.absLim+'G まで';
+  return rank+modeGroupsHTML(r,2)+tail+hintCheck(c,r);
 }
 /* ゾーン表とCZ到達から割り出した通常ゲーム数の合計。
    確定した周期はその到達G、進行中の周期は今の到達Gを足す */
@@ -4191,10 +4718,19 @@ function paintKinds(){
   });
 }
 function render(){
+  MEMO=null;
+  calibEps();
+  SOFTL={}; SOFTCAL={};
+  calibSoft();
+  MEMO={j:null,m:new Map()};
+  try{ render1() }finally{ MEMO=null }
+}
+function render1(){
   renderChips();
   renderHantei(); renderMode(); renderKoyaku(); renderGameInputs();
   if(tab==="shukei") renderShukei();
   paintKinds();
+  renderForgot(); renderRec();
   document.getElementById("code").value=encode();
   var sn=document.getElementById("storeNote");
   if(sn){
@@ -4205,6 +4741,8 @@ function render(){
       : '<span style="color:#f87171">この環境では端末保存が使えない。</span>')+
       'アドレスバーのURLにも同じ内容が自動で書き込まれるので、<b>今のURLをブックマークかホーム画面に追加</b>しておけば、そこから開けば続きから再開できる。'+
       '<br>端末保存が消えるのは、ブラウザの履歴やサイトデータを消したとき、プライベートウィンドウのとき、端末の容量が足りず自動削除されたとき。'+
+      (swOK===true?'<br><span style="color:#34d399">電波が無くても開ける（オフライン起動 有効）。</span>'
+        :swOK===false?'<br><span style="color:#fbbf24">オフライン起動は未設定。GitHubで ghoul.html と同じ場所に sw.js を置くと、電波が無くても開ける。</span>':'')+
       (persistOK===true?'<span style="color:#34d399">この端末では自動削除されない設定が有効になっている。</span>'
         :persistOK===false?'自動削除されない設定を申請したが許可されていない。定期的に下の「バックアップを保存」を押しておくと確実。'
         :'')+
@@ -4284,6 +4822,44 @@ function render(){
       "右上の＋−が全ボタン共通のスイッチ。押し間違えたら−に切り替えて同じボタンを押す。"
     ]],
     ["今回の変更点",[
+      "★AT終了後の流れ … 穢れの獲得量（なし／小／中／大）を押すと捕喰ランプが光る → ランプ（未確認／弱／中／強）を押すとアイキャッチの欄へ飛ぶ → アイキャッチを押すと小役の欄へ戻る。",
+      "★AT終了時に、駆け抜けとして数えたかどうかを表示する。1戦目で負けてATが終わり、BITESにも特化ゾーンにも入っていなければ駆け抜け。",
+      "★アイキャッチ「喰種化（黒）」は、AT終了後（周期の始め）に出たものとして「100G以内に節目があるモード」を重くし、さらに天国を3倍にした。黒だけで 1位 天国 46％ になる。解析は「100G以内に当選濃厚」までで天国確定とは言っていないので、確定にはしない。3倍は出発点で、記録の答え合わせで強さが自動で直る。",
+      "★節目の前兆は最初から「無」。前兆が来た節目だけ押す。押すたびに 無 → プレ → 東京上空 → 無 と切り替わる（「−」モードなら逆回り）。通り過ぎた節目で「無」のままなら前兆なしとして扱う（200G無＝天国準備濃厚、400G無＝通常C濃厚）。",
+      "★電波が無くても開ける：GitHubで ghoul.html と同じ場所に sw.js を置くと、一度開いた後は電波が無くても起動する（電波があるときは毎回最新版を取る）。保存の欄に「オフライン起動 有効」と出れば成功。TikTokなどのアプリ内ブラウザでは効かないことがあるので、Safariでホーム画面に追加して使う。",
+      "★かんたん入力：ボタンは高さ38px以上・文字11px以上。③で節目ごとの前兆（プレ前兆／東京上空／前兆なし）も入れられる。④濃厚示唆は出たときだけ開く。②③の見出しに記録先のGが出る。",
+      "★総Gが未入力のときのトロフィーは推定の総Gで残し、その旨を知らせる。",
+      "★設定の％とモードの％が本当にその割合で当たるかを、本体の計算で模擬して確かめた（どちらも誤差の範囲で一致）。",
+      "★判定に使わない入力（昼・夕・夜のステージ、通常時の強チェ・チャンス・確定役、飛び先の重複ボタン、裏ATの手動カウンター、トロフィーの総G、報酬テーブル、特化ゾーン）は「記録用」として最初は隠す。「記録用の入力も出す ▼」で出せる。トロフィーは押した時点の総Gで自動で残る。かんたん入力は判定に効くボタンだけを出す。",
+      "★かんたん入力は ① アイキャッチ ② 招待状 ③ 当たったG（＋エピボ・直撃）④ 濃厚示唆 の4種類だけ。②③は◀▶で選んだ節目として記録する。下段リプ・精神世界・前兆・穢れなどは「詳しい入力に戻す」で入れる。",
+      "★押し忘れの候補を橙の点線で光らせる：2周期目以降でアイキャッチが空、3周期以上で総Gが未入力。「入れる」を押すとその欄へ飛ぶ。",
+      "★設定差の数値は、p-world（機械割・AT初当り）と解析サイト3件（1GAME・スロッターの道具箱・DMMぱちタウン）で一致を確認した。",
+      "★設定の％が本当にその割合で当たるかを、設定を決めて台の数字を作る模擬（600台ぶん）で確かめた。予測の％と実際の割合は誤差の範囲で一致した（「4〜6が90％」と出た台は、実際に約9割が設定4〜6）。",
+      "★確度が低いうちは、緑の帯で設定の1位を出さず「判断保留」と出す。",
+      "★自動の控え：周期が1つ進むごと・10分ごとに、端末へ最新5件を自動で残す。保存の欄の「○○の状態に戻す」で戻せる。",
+      "★速さ：押したときの画面全体の光り方を軽い方法に変え、判定の計算を1回の更新につき1回にした。",
+      "★モードは アイキャッチ → 招待状 → 節目の前兆 の順に見る。画面の上の緑の帯に「モード 1位／2位」と「設定 1位・1〜2と4〜6の合計・確度」を常に出す（通常時・AT中・判定）。",
+      "★AT終了後は 穢れ を押した時点でアイキャッチの欄が開く。捕喰ランプを押すとアイキャッチへ飛ぶ（開いたまま）。ランプが分からなければ飛ばしてアイキャッチを押してよい。",
+      "★CZ・ATに当たった周期は、記録済みの欄に「答え合わせ（当たった節目から）」を出す。示唆を一切使わず、当たった節目（レア役当選はそのG）と天井だけで推定し直し、示唆の言うモードが8割以上なら正しかった、2割以下なら外れ。",
+      "★前兆の欄で結末を CZ／AT にした（レア役などで当たった）周期は、そのGより手前の節目では当たっていないものとして、先に節目があるモードを重くする。",
+      "★「期待度UP」系の示唆（アイキャッチ・CZ失敗カード・手紙・200Gプレ前兆）も学習する。確定した周期ごとに、示唆を一切使わず当たったGと天井だけで推定し直し（示唆どうしで採点し合わないため）、示唆の言うモードが8割以上なら当たり、2割以下なら外れと数える。解析の倍率を10回ぶんの出発点にして強さを更新する。根拠に「答え合わせN回中M回当たり」と出る。",
+      "　答え合わせが1回も無いうちは解析の倍率のまま。「今すぐに」のように段階がある示唆（チャンス1.4／天国準備2／天国3）は、比率を保ったまま全体が伸び縮みする。",
+      "★100G以内の当選率とCZ回数の重なりを測った。周期の長さを設定1と6で2万回ずつ模擬すると相関は約0.53、CZ回数と重ならない情報は約0.58。1/2ではなくこの0.58で掛ける。",
+      "★裏ATは「100G以内」と「101〜200G」の重ならない2区間で数える。解析値の200G以内は累計の率なので、そこから100G以内の分を引いて101〜200Gの率を出す。弱める必要が無くなった。",
+      "★濃厚!?の外れの余地は、1/20を出発点に自分の記録から学習する。濃厚で残ったモードの天井を超えてCZに当たった周期を外れとして数え、(外れ+1)/(使った回数+20)にする。モードの見立てに今の余地と回数を出す。",
+      "★モードの見立てに、アイキャッチ → 招待状 → 節目の前兆 の順に1段ずつ足したときの順位の移り変わりを出す。参考にする順番が計算の中でどう効いたかが見える。",
+      "★モードは確定させず、可能性が高い順（1位〜6位）に並べる。バーも高い順。見出しは1位と2位を出す。",
+      "★モードの根拠は アイキャッチ → 招待状 → 節目の前兆 → その他 の順に分けて出す。記録済み周期の根拠も同じ。",
+      "★モードの「濃厚!?」は解析でも断定していないので、0にせず1/20の余地を残す。天井を過ぎたことによる除外（200G到達で天国なし など）は事実なので0のまま。",
+      "★判定の弱め方を規則にした。同じ情報を含む項目がk個あればそれぞれ1/kの強さで掛ける（100G以内の当選率とCZ回数、裏ATの100G以内と200G以内はどちらも1/2）。",
+      "★総Gが推定のときも、CZ確率と下段リプレイを1/2の強さで判定に入れる。手入力すれば全部の強さになる。",
+      "★確度の境目を解析値から計算した。設定1と6のCZ回数の差が偶然の揺れの何倍かで決める（1倍未満＝低、1〜2倍＝中、2倍以上＝高）。中まで約3,600G、高まで約14,400G。狙い目に今の倍率と必要Gを出す。",
+      "★判定の過信を削った。互いに関係の深い項目（100G以内の当選率とCZ回数、裏ATの100G以内と200G以内）は同じ情報を何度も数えないよう弱めて掛ける。",
+      "★精神世界の保証G（10／20／30G）は3択として1回だけ数える。以前は3本に分けて掛けていたので、1回の観測が膨らんで効いていた。",
+      "★CZ確率と下段リプレイは、総Gを手入力したときだけ判定に入れる。推定の総Gは純増などの仮定から出した数字で、ずれると判定ごと歪むため。エピボと直撃は通常G（ゾーン表から出る実ゲーム数）で計算する。",
+      "★「最有力：設定○」の表示をやめた。一番高い設定でも5割未満なら「まだ絞れていない」と出す。代わりに確度（低／中／高）を出す。確度は総Gの量と濃厚系の有無で決める。",
+      "★確度が低いうちは打ち切りアラートを出さない。続行・見切りの言葉も出さない。",
+      "★判定シートで総Gを打った直後に判定欄が更新されなかった不具合を直した。古いコードを貼ったとき、手で打っていた総Gが自動で上書きされる不具合も直した。",
       "★報酬テーブルの段送りは 弱チェ・スイカ・共通ベル・押し順ベル・リプレイ＝1段、強チェ・チャンス＝2段。ダブアップしたときは出目を押したあとに「ダブアップ」を押すとさらに2段下がる。",
       "★5段目で出目を押すと、そのまま1個のBITESとして確定する（「この1個を確定」と同じ）。",
       "★上乗せの契機で特化ゾーン（隻眼の梟・CCGの死神・百足覚醒・エピソード・フリーズ）を選んで枚数を記録すると、特化ゾーンの回数も同時に増える。特化ゾーンのボタンから開いたときは二重に数えない。",
@@ -4533,7 +5109,7 @@ function reportHTML(){
     '</table>'+
     tagT("AT終了画面",ATEND)+tagT("獲得枚数",MAI)+tagT("エンディングカード",ED)+
     tagT("CZ失敗カード（設定）",CARDS,1)+tagT("招待状（設定）",INVS,1)+
-    '<h2>設定判別</h2><div>設定4以上 期待度 '+(j.high*100).toFixed(1)+'% ／ 最有力 設定'+j.best+
+    '<h2>設定判別</h2><div>設定4以上 期待度 '+(j.high*100).toFixed(1)+'% ／ 確度 '+j.conf+' ／ 一番高い 設定'+j.best+
     ' ／ 期待機械割 '+j.payout.toFixed(1)+'%</div><table><tr>'+
     [1,2,3,4,5,6].map(function(x){return "<th>設定"+x+"</th>"}).join("")+'</tr><tr>'+
     j.post.map(function(x){return "<td>"+(x*100).toFixed(1)+"%</td>"}).join("")+'</tr></table>'+
@@ -4543,12 +5119,35 @@ function reportHTML(){
 
 /* ==================== イベント ==================== */
 document.addEventListener("click",function(e){
+  /* かんたん入力の招待状は、選んでいる節目のGで記録する */
+  if(e.target.closest&&e.target.closest("#simpInvG [data-k]")){ S.invPick=null; S.invG=ZG[simpCurIdx()] }
+  if(e.target.closest&&e.target.closest("[data-rectog]")){ recToggle(); return }
+  if(e.target.closest&&e.target.closest("#simpNkTog")){ simpNkOpen=!simpNkOpen; render(); return }
+  var szb=e.target.closest&&e.target.closest("[data-simpz]");
+  if(szb){
+    var zi2=simpCurIdx(), zv2=parseInt(szb.dataset.simpz,10);
+    /* 前兆を入れても節目は動かさない（このあと同じ節目でCZを押すことが多いため） */
+    simpIdx=zi2;
+    /* 同じものをもう一度押すと消す */
+    zSet(S.cur,zi2,0,zv2);
+    save(); render();
+    say(ZG[zi2]+"G の前兆を「"+({0:"なし",1:"なし",2:"プレ前兆",3:"東京上空"})[zEn(S.cur,zi2)]+"」にした。","#6ee7b7"); sayClear(3000);
+    return;
+  }
+  var fgb=e.target.closest&&e.target.closest("[data-fg]");
+  if(fgb){ fgGo(fgb.dataset.fg); return }
+  var sn=e.target.closest&&e.target.closest("[data-snap]");
+  if(sn){ snapRestore(parseInt(sn.dataset.snap,10)); return }
   /* 「1つ戻す」自身の押下は積まない。積むと戻した直後に同じ状態が入って戻れなくなる */
   if(!(e.target.closest&&e.target.closest("#undoBtn"))) pushUndo();
   /* 押したことが分かるように画面全体を一瞬光らせる */
   if(e.target.closest&&e.target.closest("button")){
     var fl=document.getElementById("flash");
-    if(fl){ fl.classList.remove("on"); void fl.offsetWidth; fl.classList.add("on") }
+    /* 画面全体の再配置を強制しないよう、アニメーションの命令で直接光らせる */
+    if(fl){
+      if(fl.animate) fl.animate([{opacity:0},{opacity:1,offset:.35},{opacity:0}],{duration:180,easing:"ease-out"});
+      else{ fl.classList.remove("on"); void fl.offsetWidth; fl.classList.add("on") }
+    }
   }
   var el=e.target.closest?e.target.closest("[data-k],[data-del],[data-tab],[data-z],[data-jump],[data-st],[data-at],[data-atm],[data-btt],[data-btu],[data-rtu],[data-kegl],[data-edit],[data-ecan],[data-zinv],[data-ipcan],[data-goto],[data-pay],[data-payu],[data-rtfix],[data-kzt],[data-kzr],[data-uwt],[data-uwv],[data-uwu],[data-maiv],[data-maiu],[data-bts],[data-btw],[data-rts],[data-rtst],[data-uwo],[data-btf],[data-btr],[data-btfix],[data-btclr],[data-rtk],[data-rtc],[data-rtclr],[data-ark2],[data-arh],[data-arfix],[data-arclr],[data-go2],[data-uwm],[data-uwmf],[data-kegu],[data-kgc],[data-kzfix],[data-kzclr],[data-btres],[data-urap],[data-trog],[data-trogu],[data-memo],[data-memol],[data-memod],[data-eval],[data-simp],[data-abar],[data-hist],[data-est],[data-run],[data-rund],[data-zb],[data-tgm],[data-pl],[data-edtop],[data-rtdbl],[data-simpd]"):null;
   if(!el) return;
@@ -4712,9 +5311,11 @@ document.addEventListener("click",function(e){
     TRO.forEach(function(o,i){ if(Number(S[o.k]||0)>0) li=i });
     if(li<0){ say("先にトロフィーのボタンを押す。","#f87171"); sayClear(4000); return }
     if(!S.troLog) S.troLog=[];
-    S.troLog.push({i:li,g:tv});
+    /* トロフィーを押した時点で自動で残しているので、ここは直近の1件のGを直す */
+    var lt=S.troLog[S.troLog.length-1];
+    if(lt&&lt.i===li) lt.g=tv; else S.troLog.push({i:li,g:tv});
     save(); render();
-    say((TRO[li]||{lab:"?"}).lab+" を "+tv+"G で記録した。","#6ee7b7"); sayClear(4000);
+    say((TRO[li]||{lab:"?"}).lab+" を "+tv+"G に直した。","#6ee7b7"); sayClear(4000);
     return;
   }
   if(el.dataset.trogu){
@@ -4736,7 +5337,12 @@ document.addEventListener("click",function(e){
     return;
   }
   if(el.dataset.kegl!==undefined){
-    S.kegLamp=parseInt(el.dataset.kegl,10)||0; save(); render(); gotoTopOf("sKoy"); return;
+    S.kegLamp=parseInt(el.dataset.kegl,10)||0; save(); render();
+    var lg2=document.getElementById("kegLampG"); if(lg2) lg2.classList.remove("nextIn");
+    /* 捕喰ランプの次はアイキャッチ（ステージチェンジ時）を入れる */
+    openGo("sEye","pEye","bEye");
+    say("次はアイキャッチ（ステージチェンジ時）。押すと小役の欄へ戻る。","#fbbf24"); sayClear(4000);
+    return;
   }
   if(el.dataset.atm){ atToggle(); return }
   /* アラートを消す。中身が変わればまた出る */
@@ -4981,8 +5587,27 @@ document.addEventListener("click",function(e){
     }
     else{
       S[k]=Math.max(0,(S[k]||0)+sign);
+      /* トロフィーは押した時点の総Gを自動で組にして残す（総Gのボタンを押す手間をなくす） */
+      var tri=-1; TRO.forEach(function(o,ii){ if(o.k===k) tri=ii });
+      if(tri>=0){
+        if(!S.troLog) S.troLog=[];
+        if(sign>0){
+          S.troLog.push({i:tri,g:Math.round(tgUse()/10)*10});
+          if(!tgReal()) setTimeout(function(){ say("総Gが未入力なので、推定の総G（約"+Math.round(tgUse()/10)*10+"G）で残した。記録用のボタンで直せる。","#fbbf24"); sayClear(5000) },0);
+        }
+        else for(var tj=S.troLog.length-1;tj>=0;tj--){ if(S.troLog[tj].i===tri){ S.troLog.splice(tj,1); break } }
+      }
       /* 赫眼の継続Gを押したら欄を閉じる */
       if(/^kga?\d/.test(k)&&sign>0) S.kkPick=0;
+    }
+    /* 穢れの獲得量を押したら、次は捕喰ランプを押すように光らせる */
+    if(sign>0&&KEGARE.some(function(o){ return o.k===k })){
+      save(); render();
+      var lg=document.getElementById("kegLampG"); if(lg) lg.classList.add("nextIn");
+      /* アイキャッチの欄は先に開いておく。ランプを飛ばしてもそのまま押せる */
+      forceOpen("pEye","bEye");
+      say("アイキャッチの欄を開いた。捕喰ランプ（未確認／弱／中／強）を押すとアイキャッチへ飛ぶ。","#fbbf24"); sayClear(5000);
+      return;
     }
     save(); render(); backTopAfter(btgt); return;
   }
@@ -5015,7 +5640,7 @@ document.getElementById("minus").onclick=function(){ sign=-1;
     this.value=this.value.replace(/[^0-9]/g,""); S[key]=this.value;
     if(key==="ng") S.ngManual=true;
     if(key==="tg") S.tgMan=true;
-    save(); renderGameInputs(); renderEst(); renderRun(); renderAim(); renderAlert();
+    save(); renderHantei(); renderGameInputs(); renderEst(); renderRun(); renderAim(); renderAlert();
     document.getElementById("code").value=encode();
   });
 });
@@ -5175,11 +5800,27 @@ function gotoSec(id){
     if(acc&&acc.getAttribute("aria-expanded")==="false") acc.click();
   }
   var t=sec||el;
-  if(t) window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-52,behavior:"smooth"});
+  if(t) window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-52-barH(),behavior:"smooth"});
 }
 /* 画面のどちらにいてもメッセージが見えるように両方へ出す */
 /* 指定した欄の先頭へ戻す。チップの帯（58px）ぶん余白を取る */
 /* 指定した欄を光らせる。ほかの欄の光は消す */
+/* 上に貼り付いた緑の帯の高さ。飛んだ先が帯の下に隠れないようにする */
+function barH(){ var b=document.getElementById("topBars"); return b?b.offsetHeight:0 }
+/* たたんである欄を必ず開く（押すたびに開閉する acc とは別） */
+function forceOpen(btnId,bodyId){
+  var b=document.getElementById(btnId), body=document.getElementById(bodyId);
+  if(!b||!body) return;
+  if(b.getAttribute("aria-expanded")!=="true") b.click();
+}
+/* 欄を開いてから、その欄へ飛ぶ */
+function openGo(secId,btnId,bodyId){
+  forceOpen(btnId,bodyId);
+  chipCur=null; try{ renderChips() }catch(e){}
+  var t=document.getElementById(secId);
+  if(t) try{ window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-52-barH(),behavior:"smooth"}) }catch(e2){}
+  setGlow(secId);
+}
 function setGlow(id){
   [].forEach.call(document.querySelectorAll(".glow"),function(el){ el.classList.remove("glow") });
   if(!id) return;
@@ -5192,14 +5833,14 @@ function gotoTopOf(id){
   chipCur=null;
   try{ renderChips() }catch(e){}
   try{
-    window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-58,behavior:"smooth"});
+    window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-58-barH(),behavior:"smooth"});
   }catch(e2){}
 }
 /* 押したら小役の欄まで戻す区画。[区画, 戻り先, 何秒後に戻るか, 戻るときに畳むアコーディオンのボタン] */
 var BACKTOP=[
   ["bCard","sKoy",1,"pCard"],["bEye","sKoy",1,"pEye"],
   ["bInv","sKoy",1,"pInv"],
-  ["kegG","sKoy",1,"pKeg"],["kegLampG","sKoy",1,"pKeg"],["kegCtlG","sKoy",1,"pKeg"],
+  ["kegCtlG","sKoy",1,"pKeg"],
   ["bAtCnt","sKoy",1,"pAtCnt"],
   ["sEnd","sAtKoy",1,null],["sUra","sAtKoy",1,null],
   ["bArima","sAtKoy",1,"pArima"]
@@ -5214,6 +5855,8 @@ function backTopTarget(el){
 var backTimer=null;
 function backTopAfter(t){
   if(!t) return;
+  /* かんたん入力では戻り先の欄が隠れているので動かさない */
+  if(simpMode&&(tab==="normal"||tab==="at")) return;
   clearTimeout(backTimer);
   var wait=(t[2]||1)*1000;
   backTimer=setTimeout(function(){
@@ -5301,7 +5944,9 @@ function exitAT(){
   S.state="kouka"; saMark(); save(); render();
   /* AT終了後は穢れの蓄積を入れるので、穢れの欄まで飛んで開く */
   gotoSec("sKeg"); setGlow("sKeg");
-  say("AT中の小役 "+n+" 件を記録して通常へ戻った。穢れの欄へ飛んだ。獲得量（なし／小／中／大）を押す。","#34d399");
+  say("AT中の小役 "+n+" 件を記録して通常へ戻った。"+
+    (kake?"駆け抜けとして数えた（通算"+S.kake+"回）。":"駆け抜けではない（1戦目で勝った／BITES・特化ゾーンあり）。")+
+    "穢れの欄へ飛んだ。獲得量（なし／小／中／大）→ 捕喰ランプ → アイキャッチ の順に押す。","#34d399");
   sayClear(6000);
 }
 function atToggle(){
@@ -5785,7 +6430,8 @@ document.getElementById("bkFile").onchange=function(){
 window.addEventListener("pagehide",flushSave);
 window.addEventListener("beforeunload",flushSave);
 document.addEventListener("visibilitychange",function(){ if(document.hidden) flushSave() });
-askPersist();
+askPersist(); regSW();
+renderSnaps();
 document.getElementById("pasteGo").onclick=function(){
   var v=decode(document.getElementById("pasteIn").value), msg=document.getElementById("copymsg");
   if(!v){ msg.textContent="読み込めない形式"; msg.style.color="#f87171"; return }
